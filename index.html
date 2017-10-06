@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>WDI Project 1</title>
-    <link rel="stylesheet" type="text/css "href="css/style.css">
-    <script src="js/app.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <h1>WDI Project</h1>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>WordMash</title>
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="js/words.js" charset="utf-8"></script>
+  <script src="js/app.js" charset="utf-8"></script>
+</head>
+<body>
+  <div class="sun"></div>
+  <div class="cloudLeft">
+    <div class="cloudTop">
+      <div class="cloud1"></div>
+      <div class="cloud2"></div>
+    </div>
+    <div class="cloudBottom">
+      <div class="cloud3"></div>
+      <div class="cloud4"></div>
+    </div>
+  </div>
+  <div class="cloudRight">
+    <div class="cloudTop">
+      <div class="cloud1"></div>
+      <div class="cloud2"></div>
+    </div>
+    <div class="cloudBottom">
+      <div class="cloud3"></div>
+      <div class="cloud4"></div>
+    </div>
+  </div>
+  <div class="wrapper">
+    <main>
+      <h1>WordMash</h1>
+      <div class="intro">
+        <div class="instructions">
+          <h2>Level One</h2>
+          <p class="levelInfo">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <button id="playGame" type="button" name="play" class="playLevel">Play</button>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <input id="answerBox" type="text" name="answer" value="" placeholder="Words go here...">
+    </footer>
+  </div>
+</body>
 </html>
