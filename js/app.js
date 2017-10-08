@@ -1,8 +1,6 @@
-console.log(wordArray);
-console.log('hello');
-
 let lettersInPlay = ['d', 'o', 'g'];
 let submittedWord = 'dog';
+let score = 0;
 
 $(() => {
 
@@ -10,9 +8,15 @@ $(() => {
   const $answerBox = $('#answerBox');
 
   $playGame.on('click', function() {
+    prepareGame();
     startTimer();
     generateLetters();
   });
+
+  function prepareGame() {
+    $('.intro, .cloudLeft, .cloudRight').css({'display': 'none'});
+    $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
+  }
 
   function startTimer() {
     $answerBox.on('keypress', checkAnswer);
@@ -24,12 +28,11 @@ $(() => {
 
   function checkAnswer() {
     let wordIsValid = false;
-    let lettersAreValid = true;
     let correctLetters = 0;
     const splitAnswer = submittedWord.split('');
     console.log(splitAnswer);
-    for (let i = 0; i < wordArray.length; i++) {
-      if (submittedWord === wordArray[i]) {
+    for (let i = 0; i < wordList.length; i++) {
+      if (submittedWord === wordList[i]) {
         console.log('valid word');
         wordIsValid = true;
       }
