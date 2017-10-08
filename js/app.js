@@ -1,5 +1,5 @@
-let lettersInPlay = ['d', 'o', 'g'];
-let submittedWord = 'dog';
+let lettersInPlay = ['d', 'o', 'g', 'c', 'a', 't'];
+let submittedWord;
 let score = 0;
 
 $(() => {
@@ -11,15 +11,23 @@ $(() => {
     prepareGame();
     startTimer();
     generateLetters();
+    $answerBox.focus();
   });
 
   function prepareGame() {
     $('.intro, .cloudLeft, .cloudRight').css({'display': 'none'});
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
+    $answerBox.on('keypress', function(e) {
+      if (e.which === 13) {
+        e.preventDefault();
+        checkAnswer();
+        $answerBox.val('');
+      }
+    });
   }
 
   function startTimer() {
-    $answerBox.on('keypress', checkAnswer);
+
   }
 
   function generateLetters() {
@@ -29,6 +37,8 @@ $(() => {
   function checkAnswer() {
     let wordIsValid = false;
     let correctLetters = 0;
+    submittedWord = $answerBox.val();
+    console.log(submittedWord);
     const splitAnswer = submittedWord.split('');
     console.log(splitAnswer);
     for (let i = 0; i < wordList.length; i++) {
@@ -55,8 +65,6 @@ $(() => {
   function displayResults() {
 
   }
-
-  checkAnswer();
 
 });
 
