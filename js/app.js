@@ -1,5 +1,4 @@
 let lettersInPlay = [];
-// let uniqueLetters = [];
 let submittedWord;
 let score = 0;
 const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -11,6 +10,9 @@ $(() => {
   const $answerBox = $('#answerBox');
   const $clock = $('#countdown');
   const $letterSpace = $('#letterSpace');
+  const $wordLog = $('#loggedWords');
+  const $scoreboard = $('#scoreboard');
+  const $scoreCount = $('#scoreCount');
 
   $playGame.on('click', function() {
     prepareGame();
@@ -21,7 +23,8 @@ $(() => {
 
   function prepareGame() {
     $('.intro, .cloudLeft, .cloudRight').css({'display': 'none'});
-    $('.gameboard').css({'display': 'block'});
+    $letterSpace.css({'display': 'block'});
+    $scoreboard.css({'display': 'block'});
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
     $answerBox.on('keypress', function(e) {
       if (e.which === 13) {
@@ -42,7 +45,7 @@ $(() => {
     }, 1000);
     function checkValue() {
       if (countdown <= 3) {
-        $($clock.css({'color': 'rgba(255, 0, 0, 1)'}));
+        $($clock.css({'color': 'rgba(219, 37, 37, 1)'}));
       }
       if (countdown === 0) {
         clearInterval(timer);
@@ -55,15 +58,17 @@ $(() => {
 
   function generateLetters() {
     let counter = 0;
-    let speed = 1000;
     const timer = setInterval(() => {
       counter++;
       const randomClass = counter.toString();
       const ranNum = Math.floor(Math.random() * 26);
       const letterToAdd = alphabetUpper[ranNum];
       lettersInPlay.push(letterToAdd);
-      const ranPosTop = (Math.floor(Math.random() * 526) + 55).toString();
-      const ranPosLeft = (Math.floor(Math.random() * 1001) + 1).toString();
+      let ranPosTop = (Math.floor(Math.random() * 486) + 55).toString();
+      const ranPosLeft = (Math.floor(Math.random() * 861) + 1).toString();
+      if (parseInt(ranPosLeft) > 800) {
+        ranPosTop = (Math.floor(Math.random() * 526) + 240).toString();
+      }
       $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
       $('p.' + randomClass).html(letterToAdd).css({
         'top': ranPosTop + 'px',
@@ -86,11 +91,8 @@ $(() => {
     }
   }
 
-  // MAYBE YOU DONT NEED UNIQUE LETTERS
-
   function checkAnswer() {
     let wordIsValid = false;
-    let correctLetters = 0;
     submittedWord = $answerBox.val().toUpperCase();
     console.log(submittedWord);
     const splitAnswer = submittedWord.split('');
@@ -117,10 +119,27 @@ $(() => {
     // }
     if (wordIsValid === true && invalidLetters.length === 0) {
       console.log('ANSWER PASSES TEST');
+      $wordLog.append($(`<span>${submittedWord}</span>`).addClass('green'));
+      // FAILED ATTEMPT AT HIGHLIGHTING CORRECT LETTERS GREEN
+      // const $correctLetters = $('.letters');
+      // for (let i = 0; i < $correctLetters.length; i++) {
+      //   for (let j = 0; j < splitAnswer.length; j++) {
+      //     if ($correctLetters[i] === splitAnswer[j]) {
+      //       $correctLetters[i].addClass('correct');
+      //     }
+      //   }
+      // }
+      scoreUpdate();
     } else {
       console.log('FAIL');
+      $wordLog.append($(`<span>${submittedWord}</span>`).addClass('red'));
     }
     // if both check conditions are met, as above
+  }
+
+  function scoreUpdate() {
+    score = score + submittedWord.length;
+    $scoreCount.html(score);
   }
 
   function displayResults() {

@@ -11,7 +11,9 @@
   <script src="js/app.js" charset="utf-8"></script>
 </head>
 <body>
-  <div class="sun"><p id="countdown" class="timer">20</p></div>
+  <div class="sun">
+    <p id="countdown" class="timer">30</p>
+  </div>
   <div class="cloudLeft">
     <div class="cloudTop">
       <div class="cloud1"></div>
@@ -37,15 +39,20 @@
       <h1>WordMash</h1>
       <div id="letterSpace" class="gameboard"></div>
       <div class="intro">
-        <div class="instructions">
-          <h2>Level 1</h2>
-          <p class="levelInfo">Welcome to WordMash!</p>
-          <br>
-          <p class="levelInfo">Enter words using only the letters on screen to score points.</p>
-          <br>
-          <p class="levelInfo">Score 20 points in 20 seconds to reach level 2!</p>
-          <button id="playGame" type="button" name="play" class="playLevel">Play</button>
-        </div>
+        <h2>Level 1</h2>
+        <p class="levelInfo">Welcome to WordMash!</p>
+        <br>
+        <p class="levelInfo">Enter words using only the letters on screen to score points.</p>
+        <br>
+        <p class="levelInfo">Score 20 points in 20 seconds to reach level 2!</p>
+        <button id="playGame" type="button" name="play" class="playLevel">Play</button>
+      </div>
+      <aside>
+        <p id="loggedWords" class="loggedWords"></p>
+      </aside>
+      <div id="scoreboard" class="scoreboard">
+        <p id="levelHeader" class="levelHeader">Level 1</p>
+        <p id="scoreCount" class="scoreCount">0</p>
       </div>
     </main>
     <footer>
