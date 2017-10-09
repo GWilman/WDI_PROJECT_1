@@ -1,4 +1,5 @@
 let lettersInPlay = [];
+let uniqueLetters = [];
 let submittedWord;
 let score = 0;
 const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -48,6 +49,9 @@ $(() => {
     }
   }
 
+// generate random position min (top: min 55px max 600px) (left: min 0px max 1000px)
+// if left > 800px... min top =  240px;
+
   function generateLetters() {
     let counter = 0;
     const timer = setInterval(() => {
@@ -56,8 +60,16 @@ $(() => {
       const ranNum = Math.floor(Math.random() * 26);
       const letterToAdd = alphabetLower[ranNum];
       lettersInPlay.push(letterToAdd);
+      const ranPosTop = (Math.floor(Math.random() * 546) + 55).toString();
+      const ranPosLeft = (Math.floor(Math.random() * 1001) + 1).toString();
       $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
-      $('p.' + randomClass).html(letterToAdd);
+      $('p.' + randomClass).html(letterToAdd).css({
+        'top': ranPosTop + 'px',
+        'left': ranPosLeft + 'px'
+      });
+      $.each(lettersInPlay, function(i, el) {
+        if($.inArray(el, uniqueLetters) === -1) uniqueLetters.push(el);
+      });
       checkValue();
     }, 500);
     function checkValue() {
@@ -82,9 +94,10 @@ $(() => {
     }
     // word check above works! Don't change!
     for (let i = 0; i < submittedWord.length; i++) {
-      for (let j = 0; j < lettersInPlay.length; j++) {
+      for (let j = 0; j < uniqueLetters.length; j++) {
         if (splitAnswer[i] === lettersInPlay[j]) {
           correctLetters++;
+          console.log(correctLetters);
         }
       }
     }

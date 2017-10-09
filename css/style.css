@@ -42,7 +42,7 @@ input {
 }
 
 p.letters {
-  postion: absolute;
+  position: absolute;
   display: inline-block;
   top: 0px;
   left: 10px;
