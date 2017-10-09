@@ -1,12 +1,14 @@
-let lettersInPlay = ['d', 'o', 'g', 'c', 'a', 't'];
+let lettersInPlay = [];
 let submittedWord;
 let score = 0;
+const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 $(() => {
 
   const $playGame = $('#playGame');
   const $answerBox = $('#answerBox');
   const $clock = $('#countdown');
+  const $letterSpace = $('#letterSpace');
 
   $playGame.on('click', function() {
     prepareGame();
@@ -17,6 +19,7 @@ $(() => {
 
   function prepareGame() {
     $('.intro, .cloudLeft, .cloudRight').css({'display': 'none'});
+    $('.gameboard').css({'display': 'block'});
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
     $answerBox.on('keypress', function(e) {
       if (e.which === 13) {
@@ -46,7 +49,22 @@ $(() => {
   }
 
   function generateLetters() {
-
+    let counter = 0;
+    const timer = setInterval(() => {
+      counter++;
+      const randomClass = counter.toString();
+      const ranNum = Math.floor(Math.random() * 26);
+      const letterToAdd = alphabetLower[ranNum];
+      lettersInPlay.push(letterToAdd);
+      $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
+      $('p.' + randomClass).html(letterToAdd);
+      checkValue();
+    }, 500);
+    function checkValue() {
+      if ($clock.html() === '0') {
+        clearInterval(timer);
+      }
+    }
   }
 
   function checkAnswer() {
@@ -73,6 +91,8 @@ $(() => {
     // letter validity check above works!
     if (wordIsValid === true && correctLetters === submittedWord.length) {
       console.log('ANSWER PASSES TEST');
+    } else {
+      console.log('FAIL');
     }
     // if both check conditions are met, as above
   }

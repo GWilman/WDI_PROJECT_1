@@ -33,6 +33,21 @@ input {
   line-height: 60px;
 }
 
+.gameboard {
+  position: relative;
+  width: 1000px;
+  height: 100%;
+  padding: 30px;
+  display: none;
+}
+
+p.letters {
+  postion: absolute;
+  display: inline-block;
+  top: 0px;
+  left: 10px;
+}
+
 .intro {
   height: 410px;
   width: 55%;
@@ -159,6 +174,12 @@ p.levelInfo {
   line-height: 32px;
   font-family: 'Tauri', sans-serif;
   color: rgba(108, 209, 125, 1);
+}
+
+p.letters {
+  font-size: 30px;
+  color: rgba(255, 255, 255, 1);
+  font-family: 'Tauri', sans-serif;
 }
 
 button.playLevel {
