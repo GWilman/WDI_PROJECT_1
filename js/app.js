@@ -6,6 +6,7 @@ $(() => {
 
   const $playGame = $('#playGame');
   const $answerBox = $('#answerBox');
+  const $clock = $('#countdown');
 
   $playGame.on('click', function() {
     prepareGame();
@@ -27,7 +28,21 @@ $(() => {
   }
 
   function startTimer() {
-
+    let countdown = 20;
+    $clock.css({'display': 'block'});
+    const timer = setInterval(() => {
+      countdown--;
+      $clock.html(countdown);
+      checkValue();
+    }, 1000);
+    function checkValue() {
+      if (countdown <= 3) {
+        $($clock.css({'color': 'rgba(255, 0, 0, 1)'}));
+      }
+      if (countdown === 0) {
+        clearInterval(timer);
+      }
+    }
   }
 
   function generateLetters() {

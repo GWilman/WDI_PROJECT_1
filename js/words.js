@@ -109583,5 +109583,5 @@ const words =
   zyzzyva
   zyzzyvas`;
 
-  const wordList = words.replace(/(\r\n|\n|\r)/gm,'').split(' ');
-  console.log(wordList);
+const wordList = words.replace(/(\r\n|\n|\r)/gm,'').split(' ');
+console.log(wordList);

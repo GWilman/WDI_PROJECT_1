@@ -43,17 +43,6 @@ input {
   transition: display 2s;
 }
 
-/* Typography */
-
-h1 {
-  font-size: 100px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 1);
-  font-family:'Shrikhand', cursive, sans-serif;
-  padding: 20px;
-  text-shadow: 0px 5px 10px rgba(0, 0, 0, .8);
-}
-
 /* CSS Cloud */
 
 .cloudLeft {
@@ -134,8 +123,15 @@ h1 {
 
 /* Typography */
 
+
 h1 {
-  -webkit-transition: font-size .5s; /* Safari */
+  font-size: 100px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 1);
+  font-family:'Shrikhand', cursive, sans-serif;
+  padding: 20px;
+  text-shadow: 0px 5px 10px rgba(0, 0, 0, .8);
+  -webkit-transition: font-size .5s;
   transition: font-size .5s;
 }
 
@@ -146,6 +142,14 @@ h2 {
   font-family: 'Tauri', sans-serif;
   font-weight: 600;
   color: rgba(242, 218, 36, 1);
+}
+
+p.timer {
+  line-height: 180px;
+  font-size: 100px;
+  color: rgba(255, 255, 255, 1);
+  font-family: 'Tauri', sans-serif;
+  display: none;
 }
 
 p.levelInfo {
