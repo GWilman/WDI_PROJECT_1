@@ -1,8 +1,9 @@
 let lettersInPlay = [];
-let uniqueLetters = [];
+// let uniqueLetters = [];
 let submittedWord;
 let score = 0;
 const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
+const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'F', 'G', 'H', 'I', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 $(() => {
 
@@ -32,7 +33,7 @@ $(() => {
   }
 
   function startTimer() {
-    let countdown = 20;
+    let countdown = 30;
     $clock.css({'display': 'block'});
     const timer = setInterval(() => {
       countdown--;
@@ -54,24 +55,30 @@ $(() => {
 
   function generateLetters() {
     let counter = 0;
+    let speed = 1000;
     const timer = setInterval(() => {
       counter++;
       const randomClass = counter.toString();
       const ranNum = Math.floor(Math.random() * 26);
-      const letterToAdd = alphabetLower[ranNum];
+      const letterToAdd = alphabetUpper[ranNum];
       lettersInPlay.push(letterToAdd);
-      const ranPosTop = (Math.floor(Math.random() * 546) + 55).toString();
+      const ranPosTop = (Math.floor(Math.random() * 526) + 55).toString();
       const ranPosLeft = (Math.floor(Math.random() * 1001) + 1).toString();
       $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
       $('p.' + randomClass).html(letterToAdd).css({
         'top': ranPosTop + 'px',
         'left': ranPosLeft + 'px'
       });
-      $.each(lettersInPlay, function(i, el) {
-        if($.inArray(el, uniqueLetters) === -1) uniqueLetters.push(el);
-      });
+      setTimeout(() => {
+        $('p.' + randomClass).remove();
+        delete lettersInPlay[randomClass];
+      }, 8900);
+      // uniqueLetters = lettersInPlay;
+      // $.each(lettersInPlay, function(i, el) {
+      //   if($.inArray(el, uniqueLetters) === -1) uniqueLetters.push(el);
+      // });
       checkValue();
-    }, 500);
+    }, 800);
     function checkValue() {
       if ($clock.html() === '0') {
         clearInterval(timer);
@@ -79,10 +86,12 @@ $(() => {
     }
   }
 
+  // MAYBE YOU DONT NEED UNIQUE LETTERS
+
   function checkAnswer() {
     let wordIsValid = false;
     let correctLetters = 0;
-    submittedWord = $answerBox.val();
+    submittedWord = $answerBox.val().toUpperCase();
     console.log(submittedWord);
     const splitAnswer = submittedWord.split('');
     console.log(splitAnswer);
@@ -93,16 +102,20 @@ $(() => {
       }
     }
     // word check above works! Don't change!
-    for (let i = 0; i < submittedWord.length; i++) {
-      for (let j = 0; j < uniqueLetters.length; j++) {
-        if (splitAnswer[i] === lettersInPlay[j]) {
-          correctLetters++;
-          console.log(correctLetters);
-        }
-      }
-    }
-    // letter validity check above works!
-    if (wordIsValid === true && correctLetters === submittedWord.length) {
+    const invalidLetters = splitAnswer.filter(val => !lettersInPlay.includes(val));
+    // NOW USING ABOVE
+    // THE ABOVE RETURNS ANY LETTERS PRESENT IN THE SUBMITTED WORD THAT ARE NOT
+    // PRESENT IN THE LETTERS IN PLAY ARRAY
+    // BELOW WAS FIRST ATTEMPT AT LETTER CHECK,
+    // for (let i = 0; i < submittedWord.length; i++) {
+    //   for (let j = 0; j < uniqueLetters.length; j++) {
+    //     if (splitAnswer[i] === uniqueLetters[j]) {
+    //       correctLetters++;
+    //       console.log(correctLetters);
+    //     }
+    //   }
+    // }
+    if (wordIsValid === true && invalidLetters.length === 0) {
       console.log('ANSWER PASSES TEST');
     } else {
       console.log('FAIL');

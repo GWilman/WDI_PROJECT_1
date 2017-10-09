@@ -109583,7 +109583,7 @@ const words =
   zyzzyva
   zyzzyvas`;
 
-const wordsWithSpaces = words.replace(/(\r\n|\n|\r)/gm,'').split(' ');
+const wordsWithSpaces = words.toUpperCase().replace(/(\r\n|\n|\r)/gm,'').split(' ');
 const wordList = wordsWithSpaces.filter(function(a) {
   return a !== '';
 });
