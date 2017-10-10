@@ -42,16 +42,30 @@
         <h2>Level 1</h2>
         <p class="levelInfo">Enter words below using only the letters on screen to score points.</p>
         <br>
-        <p class="levelInfo">Score <strong>15 points</strong> in <strong>30 seconds</strong> to reach the next level!</p>
+        <p class="levelInfo">Score <span class="points">15 points</span> in 30 seconds</span> to reach the next level!</p>
         <button id="playGame" type="button" name="play" class="playLevel">Play</button>
       </div>
       <div class="timeUp">
         <h2>Time's Up!</h2>
-        <p class="levelInfo">You scored <span id="score"></span> points!</p>
+        <p class="levelInfo">You scored <span id="score" class="points"></span> <span class="points">points</span>!</p>
         <br>
         <p id="scoreInfo" class="levelInfo"></p>
         <button id="replay" type="button" name="play" class="replayLevel">Replay</button>
-        <button id="lev2Button" type="button" name="play" class="nextLevel">Next Level</button>
+        <button id="nextLevel" type="button" name="play" class="nextLevel">Next Level</button>
+      </div>
+      <aside>
+        <p id="loggedWords" class="loggedWords"></p>
+      </aside>
+      <div id="scoreboard" class="scoreboard">
+        <p id="levelHeader" class="levelHeader">Level 1</p>
+        <p id="scoreCount" class="scoreCount">0</p>
+      </div>
+      <div class="level2Info">
+        <h2>Level 2</h2>
+        <p class="levelInfo">You've made it to level 2!</p>
+        <br>
+        <p class="levelInfo">Score <span class="points">15 points</span> in 30 seconds using only the <span class="blue">BLUE</span> letters to reach the next level!</p>
+        <button id="lev2Button" type="button" name="play" class="nextLevel">Play</button>
       </div>
       <aside>
         <p id="loggedWords" class="loggedWords"></p>

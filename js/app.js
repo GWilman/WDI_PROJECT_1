@@ -4,7 +4,7 @@ let playedWords = [];
 let score = 0;
 let counter = 0;
 let currentLevel = 1;
-const level2Colors = ['rgb(66, 86, 244)', 'rgb(66, 86, 244)', 'rgb(66, 86, 244)', 'rgb(66, 86, 244)', 'rgb(229, 118, 20)', 'rgb(191, 38, 79)'];
+const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
 
 // const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
 const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'F', 'G', 'H', 'I', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -19,9 +19,11 @@ $(() => {
   const $scoreboard = $('#scoreboard');
   const $scoreCount = $('#scoreCount');
   const $replayButton = $('#replay');
+  const $nextLevel = $('#nextLevel');
   const $lev2Button = $('#lev2Button');
   const $endRoundScore = $('#score');
   const $scoreInfo = $('#scoreInfo');
+  const $levelHeader = $('#levelHeader');
 
   $playGame.on('click', function() {
     prepareGame();
@@ -37,15 +39,26 @@ $(() => {
     $answerBox.focus();
   });
 
+  $nextLevel.on('click', function() {
+    if (currentLevel === 2) {
+      $('.level2Info').css({'display': 'block'});
+      $('.timeUp').css({'display': 'none'});
+      $lev2Button.css({'margin': '70px auto 30px auto'});
+    }
+  });
+
   $lev2Button.on('click', function() {
     prepareGame();
+    $levelHeader.html('Level 2');
+    score = 0;
+    $scoreCount.html(score);
     generateLettersLevel2();
     startTimer();
     $answerBox.focus();
   });
 
   function prepareGame() {
-    $('.intro, .timeUp, .cloudLeft, .cloudRight').css({'display': 'none'});
+    $('.intro, .timeUp, .level2Info, .cloudLeft, .cloudRight').css({'display': 'none'});
     $letterSpace.css({'display': 'block'});
     $scoreboard.css({'display': 'block'});
     score = 0;
@@ -63,8 +76,6 @@ $(() => {
 
   function startTimer() {
     let countdown = 30;
-    // FOR TOMORROW - CODE MAY NOW BE MESSY BUT THE BELOW BIT IS THE KEY (UPDATE COUNTDOWN)
-    // SORT OUT BUTTONS FOR IN BETWEEN LEVELS
     $clock.html(countdown);
     $clock.css({'display': 'block'});
     const timer = setInterval(() => {
@@ -160,6 +171,7 @@ $(() => {
   function checkAnswer() {
     let wordIsValid = false;
     let wordIsRepeat = false;
+    // checks if word has a match in word list...
     submittedWord = $answerBox.val().toUpperCase();
     console.log(submittedWord);
     const splitAnswer = submittedWord.split('');
@@ -170,34 +182,24 @@ $(() => {
         wordIsValid = true;
       }
     }
-
-    // word check above works! Don't change!
-
+    // checks if letters used are valid letters in play (by returning any extras)...
     const invalidLetters = splitAnswer.filter(val => !lettersInPlay.includes(val));
-
+    // checks if word has already been played in level...
     for (let i = 0; i < playedWords.length; i++) {
       if (submittedWord === playedWords[i]) {
         wordIsRepeat = true;
       }
     }
-
+    // checks if answer passes the above three tests. Adds results to word log...
     if (wordIsValid === true && invalidLetters.length === 0 && wordIsRepeat === false) {
       console.log('ANSWER PASSES TEST');
       $wordLog.append($(`<span>${submittedWord}</span>`).addClass('green'));
-      // FAILED ATTEMPT AT HIGHLIGHTING CORRECT LETTERS GREEN
-      // const $correctLetters = $('.letters');
-      // for (let i = 0; i < $correctLetters.length; i++) {
-      //   for (let j = 0; j < splitAnswer.length; j++) {
-      //     if ($correctLetters[i] === splitAnswer[j]) {
-      //       $correctLetters[i].addClass('correct');
-      //     }
-      //   }
-      // }
       scoreUpdate();
     } else {
       console.log('FAIL');
       $wordLog.append($(`<span>${submittedWord}</span>`).addClass('red'));
     }
+    // adds submittedWord to played words list to be checked on next answer...
     playedWords.push(submittedWord);
   }
 
@@ -214,17 +216,15 @@ $(() => {
     $letterSpace.css({'display': 'none'});
     $endRoundScore.html(score);
     if (currentLevel === 2) {
-      $lev2Button.css({
-        'display': 'block'
-      });
+      $nextLevel.css({'display': 'block'});
       $replayButton.css({'display': 'none'});
-      currentLevel++;
       $scoreInfo.html('<br>Congratulations, you beat level one! Things get a little more tricky in level two...');
     } else if (currentLevel === 1) {
       $replayButton.css({
         'display': 'block',
         'margin': '70px auto 30px auto'
       });
+      $nextLevel.css({'display': 'none'});
       $scoreInfo.html('<br>Unlucky, you didn\'t quite make it! Have another go...');
     }
     $wordLog.html('');
