@@ -1,10 +1,11 @@
 let lettersInPlay = [];
 let submittedWord;
-let playedWords = [];
+const playedWords = [];
 let score = 0;
 let counter = 0;
 let currentLevel = 1;
-const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
+const levelBlurb = ['', '', 'Things aren\'t so easy in level two. Better wrap up!', ''];
+const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
 
 // const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
 const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'F', 'G', 'H', 'I', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -24,6 +25,7 @@ $(() => {
   const $endRoundScore = $('#score');
   const $scoreInfo = $('#scoreInfo');
   const $levelHeader = $('#levelHeader');
+  const $snow = $('.snow1, .snow2');
 
   $playGame.on('click', function() {
     prepareGame();
@@ -34,9 +36,16 @@ $(() => {
 
   $replayButton.on('click', function() {
     prepareGame();
-    generateLetters();
     startTimer();
     $answerBox.focus();
+    $levelHeader.html('Level 2');
+    score = 0;
+    $scoreCount.html(score);
+    if (currentLevel === 2) {
+      generateLettersLevel2();
+    } else {
+      generateLetters();
+    }
   });
 
   $nextLevel.on('click', function() {
@@ -44,14 +53,16 @@ $(() => {
       $('.level2Info').css({'display': 'block'});
       $('.timeUp').css({'display': 'none'});
       $lev2Button.css({'margin': '70px auto 30px auto'});
+      $snow.css({'display': 'block'});
+      $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').addClass('snowy');
+      $levelHeader.html('Level 2');
+      score = 0;
+      $scoreCount.html(score);
     }
   });
 
   $lev2Button.on('click', function() {
     prepareGame();
-    $levelHeader.html('Level 2');
-    score = 0;
-    $scoreCount.html(score);
     generateLettersLevel2();
     startTimer();
     $answerBox.focus();
@@ -62,7 +73,7 @@ $(() => {
     $letterSpace.css({'display': 'block'});
     $scoreboard.css({'display': 'block'});
     score = 0;
-    playedWords = [];
+    playedWords.length = 0;
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
     $answerBox.prop('disabled', false);
     $answerBox.on('keypress', function(e) {
@@ -94,6 +105,7 @@ $(() => {
         $letterSpace.html('');
         submittedWord = '';
         lettersInPlay = [];
+        $('p.letters').remove();
         displayResults();
       }
     }
@@ -121,7 +133,7 @@ $(() => {
       });
       setTimeout(() => {
         $('p.' + randomClass).remove();
-        delete lettersInPlay[randomClass];
+        lettersInPlay.splice(0, 1);
       }, 8900);
       checkValue();
     }, 800);
@@ -133,16 +145,17 @@ $(() => {
   }
 
   function generateLettersLevel2() {
+    lettersInPlay.length = 0;
     const timer = setInterval(() => {
       counter++;
       const randomClass = counter.toString();
       const ranNum = Math.floor(Math.random() * 26);
       const letterToAdd = alphabetUpper[ranNum];
-      const ranColor = Math.floor(Math.random() * 6);
-      if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3) {
+      const ranColor = Math.floor(Math.random() * 7);
+      if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
         lettersInPlay.push(letterToAdd);
         setTimeout(() => {
-          lettersInPlay.shift();
+          lettersInPlay.splice(0, 1);
         }, 8900);
       }
       let ranPosTop = (Math.floor(Math.random() * 426) + 35).toString();
@@ -206,22 +219,22 @@ $(() => {
   function scoreUpdate() {
     score = score + submittedWord.length;
     $scoreCount.html(score);
+  }
+
+  function displayResults() {
     if (currentLevel === 1 && score >= 15) {
       currentLevel = 2;
     } else if (currentLevel === 2 && score >= 15) {
       currentLevel = 3;
     }
-  }
-
-  function displayResults() {
     $('.timeUp, .cloudLeft, .cloudRight').css({'display': 'block'});
     $letterSpace.css({'display': 'none'});
     $endRoundScore.html(score);
-    if (currentLevel === 2) {
+    if (score >= 15) {
       $nextLevel.css({'display': 'block'});
       $replayButton.css({'display': 'none'});
-      $scoreInfo.html('<br>Congratulations, you beat level one! Things get a little more tricky in level two...');
-    } else if (currentLevel === 1) {
+      $scoreInfo.html(`<br>Congratulations, you beat level ${currentLevel - 1}! ${levelBlurb[currentLevel]}`);
+    } else if (score < 15) {
       $replayButton.css({
         'display': 'block',
         'margin': '70px auto 30px auto'
