@@ -186,6 +186,78 @@ div.rules {
   background: radial-gradient(ellipse at center, rgba(242, 218, 136, 1) 0%, rgba(242, 218, 36, 1) 50%, rgba(242, 255, 36, 1) 100%);
 }
 
+.snowman {
+  display: none;
+  z-index: -1;
+  position: fixed;
+  height: 150px;
+  width: 70px;
+  margin: 0 auto;
+  bottom: 50px;
+  left: 200px;
+}
+
+.base {
+  width: 70px;
+  height: 70px;
+  border-radius: 180px;
+  background: white;
+  margin-top: -20px;
+}
+
+.torso {
+  width: 55px;
+  height: 60px;
+  border-radius: 60px;
+  background: white;
+  margin: 0 auto;
+}
+
+.head {
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  background: white;
+  margin: -10px auto;
+}
+
+.eyeLeft, .eyeRight {
+  display: inline-block;
+  float: left;
+  width: 3px;
+  height: 3px;
+  border-radius: 2px;
+  background: black;
+  margin: 13px 0 0 11px;
+}
+
+.nose {
+  display: inline-block;
+  float: left;
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+  background: orange;
+  margin: 1px 17px 0 17px;
+}
+
+.arm1 {
+  display: inline-block;
+  float: left;
+  width: 50px;
+  border-bottom: 2px solid black;
+  margin: 20px 0 0 -45px;
+}
+
+.arm2 {
+  display: inline-block;
+  float: left;
+  width: 45px;
+  border-bottom: 2px solid black;
+  margin: 0 5px 0 54px;
+  z-index: -1;
+}
+
 /* Typography */
 
 
@@ -204,7 +276,7 @@ h2 {
   font-size: 40px;
   margin: 20px 0;
   padding-top: 30px;
-  font-family: 'Tauri', sans-serif;
+  font-family: 'Capriola', sans-serif;
   font-weight: 600;
   color: rgba(242, 218, 36, 1);
 }
@@ -213,7 +285,7 @@ p.timer {
   line-height: 180px;
   font-size: 100px;
   color: rgba(255, 255, 255, 1);
-  font-family: 'Tauri', sans-serif;
+  font-family: 'Fredoka One', sans-serif;
   display: none;
 }
 
@@ -222,7 +294,7 @@ p.levelInfo {
   width: 80%;
   margin: 0 auto;
   line-height: 36px;
-  font-family: 'Tauri', sans-serif;
+  font-family: 'Capriola', sans-serif;
   color: rgba(108, 209, 125, 1);
 }
 
@@ -260,7 +332,7 @@ button:hover {
 p.loggedWords {
   font-size: 20px;
   line-height: 24px;
-  font-family: 'Tauri', sans-serif;
+  font-family: 'Capriola', sans-serif;
 }
 
 span.red, span.green {
@@ -297,7 +369,7 @@ span.points {
 div.rules p, div.rules li {
   font-size: 20px;
   line-height: 24px;
-  font-family: 'Tauri', sans-serif;
+  font-family: 'Capriola', sans-serif;
 }
 
 div.rules li {

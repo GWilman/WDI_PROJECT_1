@@ -4,7 +4,7 @@ const playedWords = [];
 let score = 0;
 let counter = 0;
 let currentLevel = 1;
-const levelBlurb = ['', '', 'Things aren\'t so easy in level two. Better wrap up!', ''];
+const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', ''];
 const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
 
 // const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -26,6 +26,7 @@ $(() => {
   const $scoreInfo = $('#scoreInfo');
   const $levelHeader = $('#levelHeader');
   const $snow = $('.snow1, .snow2');
+  const $snowman = $('.snowman');
 
   $playGame.on('click', function() {
     prepareGame();
@@ -54,6 +55,7 @@ $(() => {
       $('.timeUp').css({'display': 'none'});
       $lev2Button.css({'margin': '70px auto 30px auto'});
       $snow.css({'display': 'block'});
+      $snowman.css({'display': 'block'});
       $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').addClass('snowy');
       $levelHeader.html('Level 2');
       score = 0;
