@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>WordMash</title>
   <link rel="stylesheet" type="text/css" href="css/reset.css">
-  <link href="https://fonts.googleapis.com/css?family=Shrikhand|Tauri" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Shrikhand|Tauri|Fredoka+One" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="js/words.js" charset="utf-8"></script>
@@ -40,12 +40,18 @@
       <div id="letterSpace" class="gameboard"></div>
       <div class="intro">
         <h2>Level 1</h2>
-        <p class="levelInfo">Welcome to WordMash!</p>
+        <p class="levelInfo">Enter words below using only the letters on screen to score points.</p>
         <br>
-        <p class="levelInfo">Enter words using only the letters on screen to score points.</p>
-        <br>
-        <p class="levelInfo">Score 20 points in 20 seconds to reach level 2!</p>
+        <p class="levelInfo">Score <strong>15 points</strong> in <strong>30 seconds</strong> to reach the next level!</p>
         <button id="playGame" type="button" name="play" class="playLevel">Play</button>
+      </div>
+      <div class="timeUp">
+        <h2>Time's Up!</h2>
+        <p class="levelInfo">You scored <span id="score"></span> points!</p>
+        <br>
+        <p id="scoreInfo" class="levelInfo"></p>
+        <button id="replay" type="button" name="play" class="replayLevel">Replay</button>
+        <button id="lev2Button" type="button" name="play" class="nextLevel">Next Level</button>
       </div>
       <aside>
         <p id="loggedWords" class="loggedWords"></p>
