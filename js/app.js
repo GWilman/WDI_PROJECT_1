@@ -11,6 +11,10 @@ let ranColor;
 let letterToAdd;
 let deleter;
 let blueDeleter;
+let wordIsValid;
+let wordIsRepeat;
+let splitAnswer;
+let invalidLetters;
 const playedWords = [];
 const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', ''];
 const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
@@ -226,32 +230,48 @@ $(() => {
     }, 800);
   }
 
-  function checkAnswer() {
-    let wordIsValid = false;
-    let wordIsRepeat = false;
-    // checks if word has a match in word list...
+  // checks if word has a match in word list...
+  function isWordValid() {
     submittedWord = $answerBox.val().toUpperCase();
-    const splitAnswer = submittedWord.split('');
+    splitAnswer = submittedWord.split('');
     for (let i = 0; i < wordList.length; i++) {
       if (submittedWord === wordList[i]) {
         wordIsValid = true;
       }
     }
-    // checks if letters used are valid letters in play (by returning any extras)...
-    const invalidLetters = splitAnswer.filter(val => !lettersInPlay.includes(val));
-    // checks if word has already been played in level...
+  }
+
+  // checks if letters used are valid letters in play (by returning any extras)...
+  function areLettersValid() {
+    invalidLetters = splitAnswer.filter(val => !lettersInPlay.includes(val));
+  }
+
+  // checks if word has already been played in level...
+  function isWordRepeat() {
     for (let i = 0; i < playedWords.length; i++) {
       if (submittedWord === playedWords[i]) {
         wordIsRepeat = true;
       }
     }
-    // checks if answer passes the above three tests. Adds results to word log...
+  }
+
+  // checks if answer passes the above three tests. Adds results to word log...
+  function returnResult() {
     if (wordIsValid === true && invalidLetters.length === 0 && wordIsRepeat === false) {
       $wordLog.append($(`<span>${submittedWord}</span>`).addClass('green'));
       scoreUpdate();
     } else {
       $wordLog.append($(`<span>${submittedWord}</span>`).addClass('red'));
     }
+  }
+
+  function checkAnswer() {
+    wordIsValid = false;
+    wordIsRepeat = false;
+    isWordValid();
+    areLettersValid();
+    isWordRepeat();
+    returnResult();
     // adds submittedWord to played words list to be checked on next answer...
     playedWords.push(submittedWord);
   }
@@ -261,6 +281,12 @@ $(() => {
     $scoreCount.html(score);
   }
 
+  function showTimeUp() {
+    $('.timeUp, .cloudLeft, .cloudRight').css({'display': 'block'});
+    $letterSpace.css({'display': 'none'});
+    $endRoundScore.html(score);
+  }
+
   function displayResults() {
     if (currentLevel === 1 && score >= 1) {
       currentLevel = 2;
@@ -268,9 +294,7 @@ $(() => {
       currentLevel = 3;
     }
 
-    $('.timeUp, .cloudLeft, .cloudRight').css({'display': 'block'});
-    $letterSpace.css({'display': 'none'});
-    $endRoundScore.html(score);
+    showTimeUp();
 
     if (score >= 1) {
       $nextLevel.css({'display': 'block'});
