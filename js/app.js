@@ -7,8 +7,10 @@ let currentLevel = 1;
 let randomClass;
 let ranPosTop;
 let ranPosLeft;
+let ranColor;
 let letterToAdd;
 let deleter;
+let blueDeleter;
 const playedWords = [];
 const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', ''];
 const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
@@ -58,15 +60,11 @@ $(() => {
     prepareGameScreen();
     resetGame();
     startTimer();
+    generateLetters();
     $answerBox.focus();
     $levelHeader.html('Level 2');
     score = 0;
     $scoreCount.html(score);
-    if (currentLevel === 2) {
-      generateLettersLevel2();
-    } else {
-      generateLetters();
-    }
   });
 
   $nextLevel.on('click', function() {
@@ -86,7 +84,7 @@ $(() => {
   $lev2Button.on('click', function() {
     prepareGameScreen();
     resetGame();
-    generateLettersLevel2();
+    generateLetters();
     startTimer();
     $answerBox.focus();
   });
@@ -161,12 +159,46 @@ $(() => {
   }
 
   function addLetter() {
+    counter++;
+    randomClass = counter.toString();
     lettersInPlay.push(letterToAdd);
     $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
     $('p.' + randomClass).html(letterToAdd).css({
       'top': ranPosTop + 'px',
       'left': ranPosLeft + 'px'
     });
+  }
+
+  function addColorLetter() {
+    counter++;
+    randomClass = counter.toString();
+    $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
+    ranColor = Math.floor(Math.random() * 7);
+    $('p.' + randomClass).html(letterToAdd).css({
+      'top': ranPosTop + 'px',
+      'left': ranPosLeft + 'px',
+      'color': level2Colors[ranColor]
+    });
+    if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
+      lettersInPlay.push(letterToAdd);
+    }
+  }
+
+  function level1Deleter() {
+    deleter = setTimeout(() => {
+      $('p.letters')[0].remove();
+      lettersInPlay.splice(0, 1);
+    }, 8900);
+    timeoutArray.push(deleter);
+  }
+
+  function level2Deleter() {
+    if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
+      blueDeleter = setTimeout(() => {
+        lettersInPlay.splice(0, 1);
+      }, 8900);
+      timeoutArray.push(blueDeleter);
+    }
   }
 
   // level one letter generation. Random letter and positioning. Includes removal
@@ -182,55 +214,15 @@ $(() => {
         }
         return timeoutArray = [];
       }
-      counter++;
-      randomClass = counter.toString();
       getRandomLetter();
       getRandomPosition();
-      addLetter();
-      deleter = setTimeout(() => {
-        $('p.letters')[0].remove();
-        lettersInPlay.splice(0, 1);
-      }, 8900);
-      timeoutArray.push(deleter);
-      console.log('this is the timeout array', timeoutArray);
-    }, 800);
-  }
-
-  // level 2 letter generation. Same as level one but adds random color. Only blue letters
-  // are added to lettersInPlay array.
-  function generateLettersLevel2() {
-    lettersInPlay.length = 0;
-
-    const timer = setInterval(() => {
-      if ($clock.html() === '0') {
-        return clearInterval(timer);
+      if (currentLevel === 1) {
+        addLetter();
+        level1Deleter();
+      } else if (currentLevel === 2) {
+        addColorLetter();
+        level2Deleter();
       }
-      counter++;
-      const randomClass = counter.toString();
-      const ranNum = Math.floor(Math.random() * 26);
-      const letterToAdd = alphabetUpper[ranNum];
-      const ranColor = Math.floor(Math.random() * 7);
-      if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
-        lettersInPlay.push(letterToAdd);
-        setTimeout(() => {
-          lettersInPlay.splice(0, 1);
-        }, 8900);
-      }
-      let ranPosTop = (Math.floor(Math.random() * 426) + 35).toString();
-      const ranPosLeft = (Math.floor(Math.random() * 861) + 1).toString();
-      if (parseInt(ranPosLeft) > 800) {
-        ranPosTop = (Math.floor(Math.random() * 186) + 240).toString();
-      }
-      $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
-      $('p.' + randomClass).html(letterToAdd).css({
-        'top': ranPosTop + 'px',
-        'left': ranPosLeft + 'px',
-        'color': level2Colors[ranColor]
-      });
-
-      setTimeout(() => {
-        $('p.' + randomClass).remove();
-      }, 8900);
     }, 800);
   }
 
