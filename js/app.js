@@ -16,7 +16,7 @@ let wordIsRepeat;
 let splitAnswer;
 let invalidLetters;
 const playedWords = [];
-const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', ''];
+const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', 'It\s getting dark... are you ready?'];
 const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
 let timeoutArray = [];
 
@@ -72,6 +72,7 @@ $(() => {
 
   $nextLevel.on('click', function() {
     showNewLevelInfo();
+    showClock();
   });
 
   $lev2Button.on('click', function() {
@@ -105,7 +106,10 @@ $(() => {
 
   function level3Settings() {
     $lev3Button.css({'margin': '70px auto 30px auto'});
-    // $rain.css({'display': 'block'});
+    $snow.css({'display': 'none'});
+    $snowman.css({'display': 'none'});
+    $('.stars').show();
+    $('.sun').addClass('moon');
     $('.level3Info').css({'display': 'block'});
     $levelHeader.html('Level 3');
     $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').removeClass('snowy');
@@ -123,12 +127,12 @@ $(() => {
   function resetGame() {
     score = 0;
     playedWords.length = 0;
+    lettersInPlay = [];
     $answerBox.prop('disabled', false);
   }
 
   function clearGame() {
     submittedWord = '';
-    lettersInPlay = [];
     $('p.letters').remove();
     $letterSpace.html('');
   }
@@ -139,7 +143,7 @@ $(() => {
   }
 
   function showClock() {
-    countdown = 30;
+    countdown = 10;
     $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
     $clock.css({'display': 'block'});
   }
@@ -147,7 +151,6 @@ $(() => {
   // 30 second timer function.
   function startTimer() {
     showClock();
-
     const timer = setInterval(() => {
       countdown--;
       $clock.html(countdown);
@@ -324,15 +327,15 @@ $(() => {
   }
 
   function displayResults() {
-    if (currentLevel === 1 && score >= 15) {
+    if (currentLevel === 1 && score >= 5) {
       currentLevel = 2;
-    } else if (currentLevel === 2 && score >= 15) {
+    } else if (currentLevel === 2 && score >= 5) {
       currentLevel = 3;
     }
     showTimeUp();
-    if (score >= 15) {
+    if (score >= 5) {
       showNextLevel();
-    } else if (score < 15) {
+    } else if (score < 5) {
       showReplay();
     }
     $wordLog.html('');
