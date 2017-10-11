@@ -287,26 +287,32 @@ $(() => {
     $endRoundScore.html(score);
   }
 
+  function showReplay() {
+    $replayButton.css({
+      'display': 'block',
+      'margin': '70px auto 30px auto'
+    });
+    $nextLevel.css({'display': 'none'});
+    $scoreInfo.html('<br>Unlucky, you didn\'t quite make it! Have another go...');
+  }
+
+  function showNextLevel() {
+    $nextLevel.css({'display': 'block'});
+    $replayButton.css({'display': 'none'});
+    $scoreInfo.html(`<br>Congratulations, you beat level ${currentLevel - 1}! ${levelBlurb[currentLevel]}`);
+  }
+
   function displayResults() {
     if (currentLevel === 1 && score >= 1) {
       currentLevel = 2;
     } else if (currentLevel === 2 && score >= 15) {
       currentLevel = 3;
     }
-
     showTimeUp();
-
     if (score >= 1) {
-      $nextLevel.css({'display': 'block'});
-      $replayButton.css({'display': 'none'});
-      $scoreInfo.html(`<br>Congratulations, you beat level ${currentLevel - 1}! ${levelBlurb[currentLevel]}`);
+      showNextLevel();
     } else if (score < 15) {
-      $replayButton.css({
-        'display': 'block',
-        'margin': '70px auto 30px auto'
-      });
-      $nextLevel.css({'display': 'none'});
-      $scoreInfo.html('<br>Unlucky, you didn\'t quite make it! Have another go...');
+      showReplay();
     }
     $wordLog.html('');
   }
