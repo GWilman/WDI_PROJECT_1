@@ -46,7 +46,7 @@ input {
   display: inline-block;
 }
 
-.intro, .timeUp, .level2Info {
+.intro, .timeUp, .level2Info, .level3Info {
   height: 410px;
   width: 55%;
   background: rgba(0, 0, 0, .6);
@@ -64,7 +64,7 @@ input {
   100% {transform: scale(1,1);}
 }
 
-.timeUp, .level2Info {
+.timeUp, .level2Info, .level3Info {
   margin-top: 120px;
   display: none;
 }
@@ -88,14 +88,6 @@ div.scoreboard {
   bottom: 100px;
   text-align: center;
   animation: grow .5s cubic-bezier(0,0,1,1) 1;
-}
-
-aside {
-  width: 150px;
-  position: fixed;
-  left: 20px;
-  bottom: 100px;
-  text-align: left;
 }
 
 div.rules {
@@ -327,6 +319,10 @@ button {
 
 button:hover {
   background: rgba(73, 150, 86, 1);
+}
+
+button.lev2Button {
+  margin: 40px auto 30px auto;
 }
 
 p.loggedWords {

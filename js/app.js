@@ -35,6 +35,7 @@ $(() => {
   const $replayButton = $('#replay');
   const $nextLevel = $('#nextLevel');
   const $lev2Button = $('#lev2Button');
+  const $lev3Button = $('#lev3Button');
   const $endRoundScore = $('#score');
   const $scoreInfo = $('#scoreInfo');
   const $levelHeader = $('#levelHeader');
@@ -60,29 +61,17 @@ $(() => {
   });
 
   $replayButton.on('click', function() {
-    $('p.letters').remove();
     prepareGameScreen();
     resetGame();
     startTimer();
     generateLetters();
     $answerBox.focus();
-    $levelHeader.html('Level 2');
     score = 0;
     $scoreCount.html(score);
   });
 
   $nextLevel.on('click', function() {
-    if (currentLevel === 2) {
-      $('.level2Info').css({'display': 'block'});
-      $('.timeUp').css({'display': 'none'});
-      $lev2Button.css({'margin': '70px auto 30px auto'});
-      $snow.css({'display': 'block'});
-      $snowman.css({'display': 'block'});
-      $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').addClass('snowy');
-      $levelHeader.html('Level 2');
-      score = 0;
-      $scoreCount.html(score);
-    }
+    showNewLevelInfo();
   });
 
   $lev2Button.on('click', function() {
@@ -92,6 +81,36 @@ $(() => {
     startTimer();
     $answerBox.focus();
   });
+
+  function showNewLevelInfo() {
+    score = 0;
+    $scoreCount.html(score);
+    $('.timeUp').css({'display': 'none'});
+    $levelHeader.html(`Level ${currentLevel}`);
+    if (currentLevel === 2) {
+      level2Settings();
+    } else if (currentLevel === 3) {
+      level3Settings();
+    }
+  }
+
+  function level2Settings() {
+    $lev2Button.css({'margin': '70px auto 30px auto'});
+    $snow.css({'display': 'block'});
+    $snowman.css({'display': 'block'});
+    $('.level2Info').css({'display': 'block'});
+    $levelHeader.html('Level 2');
+    $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').addClass('snowy');
+  }
+
+  function level3Settings() {
+    $lev3Button.css({'margin': '70px auto 30px auto'});
+    // $rain.css({'display': 'block'});
+    $('.level3Info').css({'display': 'block'});
+    $levelHeader.html('Level 3');
+    $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').removeClass('snowy');
+    $('body').css({'background': 'rgba(0, 0, 0, 1)'});
+  }
 
   // sets up game screen and focuses on word input.
   function prepareGameScreen() {
@@ -120,7 +139,7 @@ $(() => {
   }
 
   function showClock() {
-    countdown = 10;
+    countdown = 30;
     $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
     $clock.css({'display': 'block'});
   }
@@ -197,12 +216,13 @@ $(() => {
   }
 
   function level2Deleter() {
-    if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
-      blueDeleter = setTimeout(() => {
+    blueDeleter = setTimeout(() => {
+      $('p.letters')[0].remove();
+      if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
         lettersInPlay.splice(0, 1);
-      }, 8900);
-      timeoutArray.push(blueDeleter);
-    }
+      }
+    }, 8900);
+    timeoutArray.push(blueDeleter);
   }
 
   // level one letter generation. Random letter and positioning. Includes removal
@@ -282,6 +302,7 @@ $(() => {
   }
 
   function showTimeUp() {
+    console.log(currentLevel);
     $('.timeUp, .cloudLeft, .cloudRight').css({'display': 'block'});
     $letterSpace.css({'display': 'none'});
     $endRoundScore.html(score);
@@ -303,13 +324,13 @@ $(() => {
   }
 
   function displayResults() {
-    if (currentLevel === 1 && score >= 1) {
+    if (currentLevel === 1 && score >= 15) {
       currentLevel = 2;
     } else if (currentLevel === 2 && score >= 15) {
       currentLevel = 3;
     }
     showTimeUp();
-    if (score >= 1) {
+    if (score >= 15) {
       showNextLevel();
     } else if (score < 15) {
       showReplay();
