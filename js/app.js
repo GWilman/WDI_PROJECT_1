@@ -10,17 +10,20 @@ let ranPosLeft;
 let ranColor;
 let letterToAdd;
 let deleter;
-let blueDeleter;
+let colorDeleter;
 let wordIsValid;
 let wordIsRepeat;
 let splitAnswer;
 let invalidLetters;
-const playedWords = [];
-const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', 'It\s getting dark... are you ready?'];
-const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
+let totalScore = 0;
 let timeoutArray = [];
+const playedWords = [];
 
-// const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
+const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', 'It\'s getting dark... are you ready?'];
+
+const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
+const level3Colors = ['rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(229, 118, 20, 1)', 'rgba(66, 86, 244, 1)'];
+
 const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'F', 'G', 'H', 'I', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 $(() => {
@@ -36,7 +39,9 @@ $(() => {
   const $nextLevel = $('#nextLevel');
   const $lev2Button = $('#lev2Button');
   const $lev3Button = $('#lev3Button');
+  const $restartButton = $('#restartGame');
   const $endRoundScore = $('#score');
+  const $finalScore = $('#finalScore');
   const $scoreInfo = $('#scoreInfo');
   const $levelHeader = $('#levelHeader');
   const $snow = $('.snow1, .snow2');
@@ -83,10 +88,28 @@ $(() => {
     $answerBox.focus();
   });
 
+  $lev3Button.on('click', function() {
+    prepareGameScreen();
+    resetGame();
+    generateLetters();
+    startTimer();
+    $answerBox.focus();
+  });
+
+  $restartButton.on('click', function() {
+    resetGame();
+    $('.intro').show();
+    $('footer').css({'background': 'rgba(108, 209, 125, 1)'});
+    $('body').css({'background': 'rgba(109, 228, 242, .8)'});
+    $('.endGame').hide();
+    $('h1').css({'font-size': '100px', 'position': 'default', 'left': 'default', 'top': 'default'});
+    $('#rules').show();
+  });
+
   function showNewLevelInfo() {
     score = 0;
     $scoreCount.html(score);
-    $('.timeUp').css({'display': 'none'});
+    $('.timeUp').hide();
     $levelHeader.html(`Level ${currentLevel}`);
     if (currentLevel === 2) {
       level2Settings();
@@ -96,21 +119,23 @@ $(() => {
   }
 
   function level2Settings() {
-    $lev2Button.css({'margin': '70px auto 30px auto'});
-    $snow.css({'display': 'block'});
-    $snowman.css({'display': 'block'});
-    $('.level2Info').css({'display': 'block'});
+    $lev2Button.css({'margin': '60px auto 30px auto'});
+    $snow.show();
+    $snowman.show();
+    $('.level2Info').show();
     $levelHeader.html('Level 2');
     $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').addClass('snowy');
   }
 
   function level3Settings() {
-    $lev3Button.css({'margin': '70px auto 30px auto'});
-    $snow.css({'display': 'none'});
-    $snowman.css({'display': 'none'});
+    $('.timeUp').css({'background': 'rgba(255, 255, 255, .4)'});
+    $lev3Button.css({'margin': '28px auto 30px auto'});
+    $snow.hide();
+    $snowman.hide();
+    $('footer').css({'background': 'rgba(32, 76, 43, 1)'});
     $('.stars').show();
     $('.sun').addClass('moon');
-    $('.level3Info').css({'display': 'block'});
+    $('.level3Info').show();
     $levelHeader.html('Level 3');
     $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').removeClass('snowy');
     $('body').css({'background': 'rgba(0, 0, 0, 1)'});
@@ -118,9 +143,9 @@ $(() => {
 
   // sets up game screen and focuses on word input.
   function prepareGameScreen() {
-    $('#rules, .intro, .timeUp, .level2Info, .cloudLeft, .cloudRight').css({'display': 'none'});
-    $letterSpace.css({'display': 'block'});
-    $scoreboard.css({'display': 'block'});
+    $('#rules, .intro, .timeUp, .level2Info, .level3Info, .cloudLeft, .cloudRight').hide();
+    $letterSpace.show();
+    $scoreboard.show();
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
   }
 
@@ -143,9 +168,9 @@ $(() => {
   }
 
   function showClock() {
-    countdown = 10;
+    countdown = 30;
     $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
-    $clock.css({'display': 'block'});
+    $clock.show();
   }
 
   // 30 second timer function.
@@ -167,6 +192,7 @@ $(() => {
         clearGame();
         disableAnswerBox();
         displayResults();
+        totalScore = totalScore + score;
       }
     }
   }
@@ -202,9 +228,13 @@ $(() => {
     ranColor = Math.floor(Math.random() * 7);
     $('p.' + randomClass).html(letterToAdd).css({
       'top': ranPosTop + 'px',
-      'left': ranPosLeft + 'px',
-      'color': level2Colors[ranColor]
+      'left': ranPosLeft + 'px'
     });
+    if (currentLevel === 2) {
+      $('p.' + randomClass).html(letterToAdd).css({'color': level2Colors[ranColor]});
+    } else if (currentLevel === 3) {
+      $('p.' + randomClass).html(letterToAdd).css({'color': level3Colors[ranColor]});
+    }
     if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
       lettersInPlay.push(letterToAdd);
     }
@@ -219,13 +249,13 @@ $(() => {
   }
 
   function level2Deleter() {
-    blueDeleter = setTimeout(() => {
+    colorDeleter = setTimeout(() => {
       $('p.letters')[0].remove();
       if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
         lettersInPlay.splice(0, 1);
       }
     }, 8900);
-    timeoutArray.push(blueDeleter);
+    timeoutArray.push(colorDeleter);
   }
 
   // level one letter generation. Random letter and positioning. Includes removal
@@ -246,7 +276,7 @@ $(() => {
       if (currentLevel === 1) {
         addLetter();
         level1Deleter();
-      } else if (currentLevel === 2) {
+      } else {
         addColorLetter();
         level2Deleter();
       }
@@ -254,12 +284,18 @@ $(() => {
   }
 
   // checks if word has a match in word list...
+  // <4-letter words not allowed in level 3.
   function isWordValid() {
     submittedWord = $answerBox.val().toUpperCase();
     splitAnswer = submittedWord.split('');
     for (let i = 0; i < wordList.length; i++) {
       if (submittedWord === wordList[i]) {
         wordIsValid = true;
+      }
+    }
+    if (currentLevel === 3) {
+      if (submittedWord.length < 4) {
+        wordIsValid = false;
       }
     }
   }
@@ -305,40 +341,53 @@ $(() => {
   }
 
   function showTimeUp() {
-    console.log(currentLevel);
-    $('.timeUp, .cloudLeft, .cloudRight').css({'display': 'block'});
-    $letterSpace.css({'display': 'none'});
+    $('.timeUp, .cloudLeft, .cloudRight').show();
+    $letterSpace.hide();
     $endRoundScore.html(score);
   }
 
   function showReplay() {
-    $replayButton.css({
-      'display': 'block',
-      'margin': '70px auto 30px auto'
-    });
-    $nextLevel.css({'display': 'none'});
+    $replayButton.show().css({'margin': '70px auto 30px auto'});
+    $nextLevel.hide();
     $scoreInfo.html('<br>Unlucky, you didn\'t quite make it! Have another go...');
   }
 
   function showNextLevel() {
-    $nextLevel.css({'display': 'block'});
-    $replayButton.css({'display': 'none'});
-    $scoreInfo.html(`<br>Congratulations, you beat level ${currentLevel - 1}! ${levelBlurb[currentLevel]}`);
+    $nextLevel.show();
+    $replayButton.hide();
+    $scoreInfo.html(`<br>Congratulations, you beat level ${currentLevel}! ${levelBlurb[currentLevel + 1]}`);
   }
 
   function displayResults() {
-    if (currentLevel === 1 && score >= 5) {
+    if (currentLevel === 3) {
+      if (score >= 20) {
+        showFinalScore();
+      } else if (score < 20) {
+        showTimeUp();
+        showReplay();
+      }
+    } else {
+      if (score >= 15) {
+        showTimeUp();
+        showNextLevel();
+      } else if (score < 15) {
+        showTimeUp();
+        showReplay();
+      }
+    }
+    if (currentLevel === 1 && score >= 15) {
       currentLevel = 2;
-    } else if (currentLevel === 2 && score >= 5) {
+    } else if (currentLevel === 2 && score >= 15) {
       currentLevel = 3;
     }
-    showTimeUp();
-    if (score >= 5) {
-      showNextLevel();
-    } else if (score < 5) {
-      showReplay();
-    }
     $wordLog.html('');
+  }
+
+  function showFinalScore() {
+    $('.endGame, .cloudLeft, .cloudRight').show();
+    $letterSpace.hide();
+    $finalScore.html(totalScore);
+    $restartButton.css({'margin': '8px auto 30px auto'});
   }
 
 });

@@ -46,7 +46,7 @@ input {
   display: inline-block;
 }
 
-.intro, .timeUp, .level2Info, .level3Info {
+.intro, .timeUp, .level2Info, .level3Info, .endGame {
   height: 410px;
   width: 55%;
   background: rgba(0, 0, 0, .6);
@@ -54,7 +54,7 @@ input {
   margin: 34px auto;
 }
 
-.level3Info {
+.level3Info, .endGame {
   background: rgba(255, 255, 255, .4);
 }
 
@@ -68,7 +68,7 @@ input {
   100% {transform: scale(1,1);}
 }
 
-.timeUp, .level2Info, .level3Info {
+.timeUp, .level2Info, .level3Info, .endGame {
   margin-top: 120px;
   display: none;
 }
@@ -356,8 +356,15 @@ span.green {
   color: rgba(11, 127, 13, 1);
 }
 
-span.blue {
+span.levelBlue {
   color: rgba(66, 86, 244, 1);
+  font-weight: 800;
+  font-size: 30px;
+  text-shadow: 0px 0px 1px rgba(255, 255, 255, 1);
+}
+
+span.levelRed {
+  color: rgba(191, 38, 79, 1);
   font-weight: 800;
   font-size: 30px;
   text-shadow: 0px 0px 1px rgba(255, 255, 255, 1);
