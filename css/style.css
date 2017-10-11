@@ -450,7 +450,7 @@ footer.snowy {
 
 @keyframes animSnow1 {
   from {
-    transform: translateY(-1000px);
+    transform: translateY(-1500px);
   }
   to {
     transform: translateY(1000px);
@@ -475,7 +475,7 @@ footer.snowy {
 
 @keyframes animSnow2 {
   from {
-    transform: translateY(-1000px);
+    transform: translateY(-1500px);
   }
   to {
     transform: translateY(1000px);

@@ -1,11 +1,18 @@
 let lettersInPlay = [];
 let submittedWord;
-const playedWords = [];
+let countdown = 30;
 let score = 0;
 let counter = 0;
 let currentLevel = 1;
+let randomClass;
+let ranPosTop;
+let ranPosLeft;
+let letterToAdd;
+let deleter;
+const playedWords = [];
 const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!', ''];
 const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
+let timeoutArray = [];
 
 // const alphabetLower = ['a', 'a', 'b', 'c', 'd', 'e', 'e', 'f', 'g', 'h', 'i', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'o', 'p', 'q', 'r', 's', 't', 'u', 'u', 'v', 'w', 'x', 'y', 'z'];
 const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'F', 'G', 'H', 'I', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -31,15 +38,25 @@ $(() => {
 
   // Adding event listeners:
   $playGame.on('click', function() {
-    prepareGame();
+    prepareGameScreen();
+    resetGame();
     startTimer();
     generateLetters();
     $answerBox.focus();
   });
 
+  $answerBox.on('keypress', function(e) {
+    if (e.which === 13) {
+      e.preventDefault();
+      checkAnswer();
+      $answerBox.val('');
+    }
+  });
+
   $replayButton.on('click', function() {
     $('p.letters').remove();
-    prepareGame();
+    prepareGameScreen();
+    resetGame();
     startTimer();
     $answerBox.focus();
     $levelHeader.html('Level 2');
@@ -67,36 +84,48 @@ $(() => {
   });
 
   $lev2Button.on('click', function() {
-    prepareGame();
+    prepareGameScreen();
+    resetGame();
     generateLettersLevel2();
     startTimer();
     $answerBox.focus();
   });
 
   // sets up game screen and focuses on word input.
-  function prepareGame() {
+  function prepareGameScreen() {
     $('#rules, .intro, .timeUp, .level2Info, .cloudLeft, .cloudRight').css({'display': 'none'});
     $letterSpace.css({'display': 'block'});
     $scoreboard.css({'display': 'block'});
+    $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
+  }
+
+  function resetGame() {
     score = 0;
     playedWords.length = 0;
-    $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
     $answerBox.prop('disabled', false);
+  }
 
-    $answerBox.on('keypress', function(e) {
-      if (e.which === 13) {
-        e.preventDefault();
-        checkAnswer();
-        $answerBox.val('');
-      }
-    });
+  function clearGame() {
+    submittedWord = '';
+    lettersInPlay = [];
+    $('p.letters').remove();
+    $letterSpace.html('');
+  }
+
+  function disableAnswerBox() {
+    $answerBox.val('');
+    $answerBox.prop('disabled', true);
+  }
+
+  function showClock() {
+    countdown = 10;
+    $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
+    $clock.css({'display': 'block'});
   }
 
   // 30 second timer function.
   function startTimer() {
-    let countdown = 30;
-    $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
-    $clock.css({'display': 'block'});
+    showClock();
 
     const timer = setInterval(() => {
       countdown--;
@@ -111,16 +140,33 @@ $(() => {
 
       if (countdown === 0) {
         clearInterval(timer);
-        $answerBox.val('');
-        $answerBox.prop('disabled', true);
-        submittedWord = '';
-        lettersInPlay = [];
-        $('p.letters').remove();
-        $letterSpace.html('');
-
+        clearGame();
+        disableAnswerBox();
         displayResults();
       }
     }
+  }
+
+  function getRandomLetter() {
+    const ranNum = Math.floor(Math.random() * 26);
+    letterToAdd = alphabetUpper[ranNum];
+  }
+
+  function getRandomPosition() {
+    ranPosTop = (Math.floor(Math.random() * 426) + 35).toString();
+    ranPosLeft = (Math.floor(Math.random() * 861) + 1).toString();
+    if (parseInt(ranPosLeft) > 800) {
+      ranPosTop = (Math.floor(Math.random() * 186) + 240).toString();
+    }
+  }
+
+  function addLetter() {
+    lettersInPlay.push(letterToAdd);
+    $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
+    $('p.' + randomClass).html(letterToAdd).css({
+      'top': ranPosTop + 'px',
+      'left': ranPosLeft + 'px'
+    });
   }
 
   // level one letter generation. Random letter and positioning. Includes removal
@@ -128,32 +174,25 @@ $(() => {
   function generateLetters() {
     const timer = setInterval(() => {
       if ($clock.html() === '0') {
-        return clearInterval(timer);
+        clearInterval(timer);
+        lettersInPlay = [];
+        $('p.letters').remove();
+        for (var i = 0; i < timeoutArray.length; i++) {
+          clearTimeout(timeoutArray[i]);
+        }
+        return timeoutArray = [];
       }
-
       counter++;
-      const randomClass = counter.toString();
-      const ranNum = Math.floor(Math.random() * 26);
-      const letterToAdd = alphabetUpper[ranNum];
-      lettersInPlay.push(letterToAdd);
-      let ranPosTop = (Math.floor(Math.random() * 426) + 35).toString();
-      const ranPosLeft = (Math.floor(Math.random() * 861) + 1).toString();
-
-      if (parseInt(ranPosLeft) > 800) {
-        ranPosTop = (Math.floor(Math.random() * 186) + 240).toString();
-      }
-
-      $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
-
-      $('p.' + randomClass).html(letterToAdd).css({
-        'top': ranPosTop + 'px',
-        'left': ranPosLeft + 'px'
-      });
-
-      setTimeout(() => {
-        $('p.' + randomClass).remove();
+      randomClass = counter.toString();
+      getRandomLetter();
+      getRandomPosition();
+      addLetter();
+      deleter = setTimeout(() => {
+        $('p.letters')[0].remove();
         lettersInPlay.splice(0, 1);
-      }, 8000);
+      }, 8900);
+      timeoutArray.push(deleter);
+      console.log('this is the timeout array', timeoutArray);
     }, 800);
   }
 
@@ -163,6 +202,9 @@ $(() => {
     lettersInPlay.length = 0;
 
     const timer = setInterval(() => {
+      if ($clock.html() === '0') {
+        return clearInterval(timer);
+      }
       counter++;
       const randomClass = counter.toString();
       const ranNum = Math.floor(Math.random() * 26);
@@ -189,13 +231,7 @@ $(() => {
       setTimeout(() => {
         $('p.' + randomClass).remove();
       }, 8900);
-      checkValue();
     }, 800);
-    function checkValue() {
-      if ($clock.html() === '0') {
-        clearInterval(timer);
-      }
-    }
   }
 
   function checkAnswer() {
@@ -234,7 +270,7 @@ $(() => {
   }
 
   function displayResults() {
-    if (currentLevel === 1 && score >= 15) {
+    if (currentLevel === 1 && score >= 1) {
       currentLevel = 2;
     } else if (currentLevel === 2 && score >= 15) {
       currentLevel = 3;
@@ -244,7 +280,7 @@ $(() => {
     $letterSpace.css({'display': 'none'});
     $endRoundScore.html(score);
 
-    if (score >= 15) {
+    if (score >= 1) {
       $nextLevel.css({'display': 'block'});
       $replayButton.css({'display': 'none'});
       $scoreInfo.html(`<br>Congratulations, you beat level ${currentLevel - 1}! ${levelBlurb[currentLevel]}`);
