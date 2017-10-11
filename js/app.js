@@ -28,6 +28,8 @@ $(() => {
   const $snow = $('.snow1, .snow2');
   const $snowman = $('.snowman');
 
+
+  // Adding event listeners:
   $playGame.on('click', function() {
     prepareGame();
     startTimer();
@@ -36,6 +38,7 @@ $(() => {
   });
 
   $replayButton.on('click', function() {
+    $('p.letters').remove();
     prepareGame();
     startTimer();
     $answerBox.focus();
@@ -70,6 +73,7 @@ $(() => {
     $answerBox.focus();
   });
 
+  // sets up game screen and focuses on word input.
   function prepareGame() {
     $('#rules, .intro, .timeUp, .level2Info, .cloudLeft, .cloudRight').css({'display': 'none'});
     $letterSpace.css({'display': 'block'});
@@ -78,6 +82,7 @@ $(() => {
     playedWords.length = 0;
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
     $answerBox.prop('disabled', false);
+
     $answerBox.on('keypress', function(e) {
       if (e.which === 13) {
         e.preventDefault();
@@ -87,37 +92,45 @@ $(() => {
     });
   }
 
+  // 30 second timer function.
   function startTimer() {
     let countdown = 30;
-    $clock.html(countdown);
+    $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
     $clock.css({'display': 'block'});
+
     const timer = setInterval(() => {
       countdown--;
       $clock.html(countdown);
       checkValue();
     }, 1000);
+
     function checkValue() {
       if (countdown <= 3) {
         $($clock.css({'color': 'rgba(219, 37, 37, 1)'}));
       }
+
       if (countdown === 0) {
         clearInterval(timer);
         $answerBox.val('');
         $answerBox.prop('disabled', true);
-        $letterSpace.html('');
         submittedWord = '';
         lettersInPlay = [];
         $('p.letters').remove();
+        $letterSpace.html('');
+
         displayResults();
       }
     }
   }
 
-  // generate random position min (top: min 55px max 600px) (left: min 0px max 1000px)
-  // if left > 800px... min top =  240px;
-
+  // level one letter generation. Random letter and positioning. Includes removal
+  // of letters from screen and lettersInPlay array.
   function generateLetters() {
     const timer = setInterval(() => {
+      if ($clock.html() === '0') {
+        return clearInterval(timer);
+      }
+
       counter++;
       const randomClass = counter.toString();
       const ranNum = Math.floor(Math.random() * 26);
@@ -125,29 +138,30 @@ $(() => {
       lettersInPlay.push(letterToAdd);
       let ranPosTop = (Math.floor(Math.random() * 426) + 35).toString();
       const ranPosLeft = (Math.floor(Math.random() * 861) + 1).toString();
+
       if (parseInt(ranPosLeft) > 800) {
         ranPosTop = (Math.floor(Math.random() * 186) + 240).toString();
       }
+
       $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
+
       $('p.' + randomClass).html(letterToAdd).css({
         'top': ranPosTop + 'px',
         'left': ranPosLeft + 'px'
       });
+
       setTimeout(() => {
         $('p.' + randomClass).remove();
         lettersInPlay.splice(0, 1);
-      }, 8900);
-      checkValue();
+      }, 8000);
     }, 800);
-    function checkValue() {
-      if ($clock.html() === '0') {
-        clearInterval(timer);
-      }
-    }
   }
 
+  // level 2 letter generation. Same as level one but adds random color. Only blue letters
+  // are added to lettersInPlay array.
   function generateLettersLevel2() {
     lettersInPlay.length = 0;
+
     const timer = setInterval(() => {
       counter++;
       const randomClass = counter.toString();
@@ -171,6 +185,7 @@ $(() => {
         'left': ranPosLeft + 'px',
         'color': level2Colors[ranColor]
       });
+
       setTimeout(() => {
         $('p.' + randomClass).remove();
       }, 8900);
@@ -188,12 +203,9 @@ $(() => {
     let wordIsRepeat = false;
     // checks if word has a match in word list...
     submittedWord = $answerBox.val().toUpperCase();
-    console.log(submittedWord);
     const splitAnswer = submittedWord.split('');
-    console.log(splitAnswer);
     for (let i = 0; i < wordList.length; i++) {
       if (submittedWord === wordList[i]) {
-        console.log('valid word');
         wordIsValid = true;
       }
     }
@@ -207,11 +219,9 @@ $(() => {
     }
     // checks if answer passes the above three tests. Adds results to word log...
     if (wordIsValid === true && invalidLetters.length === 0 && wordIsRepeat === false) {
-      console.log('ANSWER PASSES TEST');
       $wordLog.append($(`<span>${submittedWord}</span>`).addClass('green'));
       scoreUpdate();
     } else {
-      console.log('FAIL');
       $wordLog.append($(`<span>${submittedWord}</span>`).addClass('red'));
     }
     // adds submittedWord to played words list to be checked on next answer...
@@ -229,9 +239,11 @@ $(() => {
     } else if (currentLevel === 2 && score >= 15) {
       currentLevel = 3;
     }
+
     $('.timeUp, .cloudLeft, .cloudRight').css({'display': 'block'});
     $letterSpace.css({'display': 'none'});
     $endRoundScore.html(score);
+
     if (score >= 15) {
       $nextLevel.css({'display': 'block'});
       $replayButton.css({'display': 'none'});
