@@ -98,12 +98,7 @@ $(() => {
 
   $restartButton.on('click', function() {
     resetGame();
-    $('.intro').show();
-    $('footer').css({'background': 'rgba(108, 209, 125, 1)'});
-    $('body').css({'background': 'rgba(109, 228, 242, .8)'});
-    $('.endGame').hide();
-    $('h1').css({'font-size': '100px', 'position': 'default', 'left': 'default', 'top': 'default'});
-    $('#rules').show();
+    restartGame();
   });
 
   function showNewLevelInfo() {
@@ -162,13 +157,28 @@ $(() => {
     $letterSpace.html('');
   }
 
+  function restartGame() {
+    $('.intro').show();
+    $('footer').css({'background': 'rgba(108, 209, 125, 1)'});
+    $('body').css({'background': 'rgba(109, 228, 242, .8)'});
+    $('.stars').hide();
+    $('.endGame').hide();
+    $('h1').css({'font-size': '100px', 'position': 'static'});
+    $('#rules').show();
+    $('.sun').removeClass('moon');
+    $clock.hide();
+    $scoreCount.html(score);
+    currentLevel = 1;
+    $levelHeader.html(`Level ${currentLevel}`);
+  }
+
   function disableAnswerBox() {
     $answerBox.val('');
     $answerBox.prop('disabled', true);
   }
 
   function showClock() {
-    countdown = 30;
+    countdown = 10;
     $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
     $clock.show();
   }
@@ -360,24 +370,24 @@ $(() => {
 
   function displayResults() {
     if (currentLevel === 3) {
-      if (score >= 20) {
+      if (score >= 2) {
         showFinalScore();
-      } else if (score < 20) {
+      } else if (score < 2) {
         showTimeUp();
         showReplay();
       }
     } else {
-      if (score >= 15) {
+      if (score >= 2) {
         showTimeUp();
         showNextLevel();
-      } else if (score < 15) {
+      } else if (score < 2) {
         showTimeUp();
         showReplay();
       }
     }
-    if (currentLevel === 1 && score >= 15) {
+    if (currentLevel === 1 && score >= 2) {
       currentLevel = 2;
-    } else if (currentLevel === 2 && score >= 15) {
+    } else if (currentLevel === 2 && score >= 2) {
       currentLevel = 3;
     }
     $wordLog.html('');
@@ -387,7 +397,6 @@ $(() => {
     $('.endGame, .cloudLeft, .cloudRight').show();
     $letterSpace.hide();
     $finalScore.html(totalScore);
-    $restartButton.css({'margin': '8px auto 30px auto'});
   }
 
 });

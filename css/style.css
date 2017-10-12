@@ -303,6 +303,16 @@ p.levelInfo {
   color: rgba(108, 209, 125, 1);
 }
 
+p.flash {
+  font-family: 'Capriola', sans-serif;
+  color: rgba(242, 218, 36, 1);
+  animation: flash .2s cubic-bezier(0,0,1,1) infinite;
+}
+
+@keyframes flash {
+  50% {opacity: 0;}
+}
+
 p.letters {
   font-size: 140px;
   color: rgba(255, 255, 255, 1);
@@ -336,6 +346,10 @@ button:hover {
 
 button.lev2Button {
   margin: 40px auto 30px auto;
+}
+
+button.restartGame {
+  margin: 44px auto 30px auto;
 }
 
 p.loggedWords {

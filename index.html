@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>WeeWords</title>
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="css/reset.css">
   <link href="https://fonts.googleapis.com/css?family=Capriola|Fredoka+One" rel="stylesheet">
@@ -81,15 +81,17 @@
         <h2>Level 3</h2>
         <p class="levelInfo">Well done! You've made it to the third and final level!</p>
         <br><br>
-        <p class="levelInfo">Score <span class="points">20 points</span> using only the <span class="levelRed">RED</span> letters! No words under 4 letters long allowed!</p>
+        <p class="levelInfo">Score <span class="points">15 points</span> using only the <span class="levelRed">RED</span> letters!</p>
         <button id="lev3Button" type="button" name="play" class="nextLevel">Play</button>
+        <br>
+        <p class="flash">NO WORDS LESS THAN 4 LETTERS LONG ALLOWED!</p>
       </div>
       <div class="endGame grow">
         <h2>Game Over</h2>
         <p class="levelInfo">Congratulations! You have completed WeeWords with a total score of <span id="finalScore" class="points"></span> <span class="points">points</span>!</p>
         <br><br>
-        <p class="levelInfo">Think you can do better? Have another crack at beating your high score!</p>
-        <button id="restartGame" type="button" name="play" class="nextLevel">Play Again</button>
+        <p class="levelInfo">Think you can do better?</p>
+        <button id="restartGame" type="button" name="play" class="restartGame">Play Again</button>
       </div>
       <div id="rules" class="rules">
         <p>Rules:</p>
@@ -100,13 +102,6 @@
           <li>- Use provided letters as many times as you like!</li>
           <li>- Think fast, type fast and hit enter to play your words. Good luck!</li>
         </ul>
-      </div>
-      <aside>
-        <p id="loggedWords" class="loggedWords"></p>
-      </aside>
-      <div id="scoreboard" class="scoreboard">
-        <p id="levelHeader" class="levelHeader">Level 1</p>
-        <p id="scoreCount" class="scoreCount">0</p>
       </div>
       <aside>
         <p id="loggedWords" class="loggedWords"></p>
