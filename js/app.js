@@ -24,7 +24,7 @@ const levelBlurb = ['', '', 'Things aren\'t so easy in level 2. Better wrap up!'
 const level2Colors = ['rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(66, 86, 244, 1)', 'rgba(229, 118, 20, 1)', 'rgba(191, 38, 79, 1)'];
 const level3Colors = ['rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(191, 38, 79, 1)', 'rgba(229, 118, 20, 1)', 'rgba(66, 86, 244, 1)'];
 
-const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'F', 'G', 'H', 'I', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'E', 'F', 'G', 'H', 'H', 'I', 'I', 'J', 'K', 'L', 'M', 'N', 'N', 'O', 'O', 'P', 'Q', 'R', 'R', 'S', 'S', 'T', 'T', 'U', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 $(() => {
 
@@ -100,6 +100,93 @@ $(() => {
     resetGame();
     restartGame();
   });
+
+  // 30 second timer function.
+  function startTimer() {
+    showClock();
+    const timer = setInterval(() => {
+      countdown--;
+      $clock.html(countdown);
+      checkValue();
+    }, 1000);
+    function checkValue() {
+      if (countdown <= 3) {
+        $($clock.css({'color': 'rgba(219, 37, 37, 1)'}));
+      }
+      if (countdown === 0) {
+        clearInterval(timer);
+        clearGame();
+        disableAnswerBox();
+        displayResults();
+        totalScore = totalScore + score;
+      }
+    }
+  }
+
+  // letter generation function for all levels
+  function generateLetters() {
+    const timer = setInterval(() => {
+      if ($clock.html() === '0') {
+        clearInterval(timer);
+        lettersInPlay = [];
+        $('p.letters').remove();
+        for (var i = 0; i < timeoutArray.length; i++) {
+          clearTimeout(timeoutArray[i]);
+        }
+        return timeoutArray = [];
+      }
+      getRandomLetter();
+      getRandomPosition();
+      if (currentLevel === 1) {
+        addLetter();
+        level1Deleter();
+      } else {
+        addColorLetter();
+        level2Deleter();
+      }
+    }, 800);
+  }
+
+  function checkAnswer() {
+    wordIsValid = false;
+    wordIsRepeat = false;
+    isWordValid();
+    areLettersValid();
+    isWordRepeat();
+    returnResult();
+    // adds submittedWord to played words list to be checked on next answer...
+    playedWords.push(submittedWord);
+  }
+
+  function scoreUpdate() {
+    score = score + submittedWord.length;
+    $scoreCount.html(score);
+  }
+
+  function displayResults() {
+    if (currentLevel === 3) {
+      if (score >= 15) {
+        showFinalScore();
+      } else if (score < 15) {
+        showTimeUp();
+        showReplay();
+      }
+    } else {
+      if (score >= 15) {
+        showTimeUp();
+        showNextLevel();
+      } else if (score < 15) {
+        showTimeUp();
+        showReplay();
+      }
+    }
+    if (currentLevel === 1 && score >= 15) {
+      currentLevel = 2;
+    } else if (currentLevel === 2 && score >= 15) {
+      currentLevel = 3;
+    }
+    $wordLog.html('');
+  }
 
   function showNewLevelInfo() {
     score = 0;
@@ -178,37 +265,13 @@ $(() => {
   }
 
   function showClock() {
-    countdown = 10;
+    countdown = 30;
     $clock.html(countdown).css({'color': 'rgba(255, 255, 255, 1)'});
     $clock.show();
   }
 
-  // 30 second timer function.
-  function startTimer() {
-    showClock();
-    const timer = setInterval(() => {
-      countdown--;
-      $clock.html(countdown);
-      checkValue();
-    }, 1000);
-
-    function checkValue() {
-      if (countdown <= 3) {
-        $($clock.css({'color': 'rgba(219, 37, 37, 1)'}));
-      }
-
-      if (countdown === 0) {
-        clearInterval(timer);
-        clearGame();
-        disableAnswerBox();
-        displayResults();
-        totalScore = totalScore + score;
-      }
-    }
-  }
-
   function getRandomLetter() {
-    const ranNum = Math.floor(Math.random() * 26);
+    const ranNum = Math.floor(Math.random() * 37);
     letterToAdd = alphabetUpper[ranNum];
   }
 
@@ -268,31 +331,6 @@ $(() => {
     timeoutArray.push(colorDeleter);
   }
 
-  // level one letter generation. Random letter and positioning. Includes removal
-  // of letters from screen and lettersInPlay array.
-  function generateLetters() {
-    const timer = setInterval(() => {
-      if ($clock.html() === '0') {
-        clearInterval(timer);
-        lettersInPlay = [];
-        $('p.letters').remove();
-        for (var i = 0; i < timeoutArray.length; i++) {
-          clearTimeout(timeoutArray[i]);
-        }
-        return timeoutArray = [];
-      }
-      getRandomLetter();
-      getRandomPosition();
-      if (currentLevel === 1) {
-        addLetter();
-        level1Deleter();
-      } else {
-        addColorLetter();
-        level2Deleter();
-      }
-    }, 800);
-  }
-
   // checks if word has a match in word list...
   // <4-letter words not allowed in level 3.
   function isWordValid() {
@@ -334,22 +372,6 @@ $(() => {
     }
   }
 
-  function checkAnswer() {
-    wordIsValid = false;
-    wordIsRepeat = false;
-    isWordValid();
-    areLettersValid();
-    isWordRepeat();
-    returnResult();
-    // adds submittedWord to played words list to be checked on next answer...
-    playedWords.push(submittedWord);
-  }
-
-  function scoreUpdate() {
-    score = score + submittedWord.length;
-    $scoreCount.html(score);
-  }
-
   function showTimeUp() {
     $('.timeUp, .cloudLeft, .cloudRight').show();
     $letterSpace.hide();
@@ -366,31 +388,6 @@ $(() => {
     $nextLevel.show();
     $replayButton.hide();
     $scoreInfo.html(`<br>Congratulations, you beat level ${currentLevel}! ${levelBlurb[currentLevel + 1]}`);
-  }
-
-  function displayResults() {
-    if (currentLevel === 3) {
-      if (score >= 2) {
-        showFinalScore();
-      } else if (score < 2) {
-        showTimeUp();
-        showReplay();
-      }
-    } else {
-      if (score >= 2) {
-        showTimeUp();
-        showNextLevel();
-      } else if (score < 2) {
-        showTimeUp();
-        showReplay();
-      }
-    }
-    if (currentLevel === 1 && score >= 2) {
-      currentLevel = 2;
-    } else if (currentLevel === 2 && score >= 2) {
-      currentLevel = 3;
-    }
-    $wordLog.html('');
   }
 
   function showFinalScore() {
