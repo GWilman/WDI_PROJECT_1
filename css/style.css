@@ -200,7 +200,7 @@ button.lev2Button {
   margin: 60px auto 30px auto;
 }
 
-button.lev3Button {
+button#lev3Button {
   margin: 30px auto 22px auto;
 }
 

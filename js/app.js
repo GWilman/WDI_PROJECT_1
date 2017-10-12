@@ -20,7 +20,7 @@ let timeoutArray = [];
 const playedWords = [];
 
 let $startGame;
-let $playGame;
+let $playLevel;
 let $answerBox;
 let $clock;
 let $letterSpace;
@@ -29,8 +29,6 @@ let $scoreboard;
 let $scoreCount;
 let $replayButton;
 let $nextLevel;
-let $lev2Button;
-let $lev3Button;
 let $restartButton;
 let $endRoundScore;
 let $finalScore;
@@ -51,7 +49,6 @@ $(init);
 function init() {
 
   $startGame = $('#startGame');
-  $playGame = $('#playGame');
   $answerBox = $('#answerBox');
   $clock = $('#countdown');
   $letterSpace = $('#letterSpace');
@@ -60,8 +57,7 @@ function init() {
   $scoreCount = $('#scoreCount');
   $replayButton = $('#replay');
   $nextLevel = $('#nextLevel');
-  $lev2Button = $('#lev2Button');
-  $lev3Button = $('#lev3Button');
+  $playLevel = $('.playLevel');
   $restartButton = $('#restartGame');
   $endRoundScore = $('#score');
   $finalScore = $('#finalScore');
@@ -72,12 +68,10 @@ function init() {
 
   // Adding event listeners:
   $startGame.on('click', startGameClick);
-  $playGame.on('click', playGameClick);
+  $playLevel.on('click', playLevelClick);
   $answerBox.on('keypress', submitAnswer);
   $replayButton.on('click', replayClick);
   $nextLevel.on('click', nextLevelClick);
-  $lev2Button.on('click', level2Click);
-  $lev3Button.on('click', level3Click);
   $restartButton.on('click', restartClick);
 }
 
@@ -86,7 +80,7 @@ function startGameClick() {
   $('.level1Info').show();
 }
 
-function playGameClick() {
+function playLevelClick() {
   prepareGameScreen();
   resetGame();
   startTimer();
@@ -108,29 +102,12 @@ function replayClick() {
   startTimer();
   generateLetters();
   $answerBox.focus();
-  score = 0;
   $scoreCount.html(score);
 }
 
 function nextLevelClick() {
   showNewLevelInfo();
   showClock();
-}
-
-function level2Click() {
-  prepareGameScreen();
-  resetGame();
-  generateLetters();
-  startTimer();
-  $answerBox.focus();
-}
-
-function level3Click() {
-  prepareGameScreen();
-  resetGame();
-  generateLetters();
-  startTimer();
-  $answerBox.focus();
 }
 
 function restartClick() {
@@ -155,7 +132,6 @@ function startTimer() {
       clearGame();
       disableAnswerBox();
       displayResults();
-      totalScore = totalScore + score;
     }
   }
 }
@@ -226,6 +202,7 @@ function displayResults() {
 }
 
 function showNewLevelInfo() {
+  totalScore = totalScore + score;
   score = 0;
   $scoreCount.html(score);
   $('.timeUp').hide();
@@ -347,7 +324,7 @@ function level1Deleter() {
   deleter = setTimeout(() => {
     $('p.letters')[0].remove();
     lettersInPlay.splice(0, 1);
-  }, 8900);
+  }, 8950);
   timeoutArray.push(deleter);
 }
 
@@ -357,7 +334,7 @@ function level2Deleter() {
     if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
       lettersInPlay.splice(0, 1);
     }
-  }, 8900);
+  }, 8950);
   timeoutArray.push(colorDeleter);
 }
 
@@ -427,11 +404,9 @@ function showFinalScore() {
 }
 
 
-
-
 /*
 
----WeeWords--- (name TBC)
+---WeeWords---
 
 The basic logic of this game is that the user can enter (valid) words into an input
 text area using ONLY the letters that they can see on the screen. The letters on
@@ -440,32 +415,16 @@ periods of time. The game will feature timed levels of increasing difficulty wit
 each introducing new functionality / game logic. The aim of the game is to progress
 through the levels and record the highest score possible.
 
-If progress is quick, add mini game / bonus rounds which feature something different
-e.g. collision logic.
-
-Plan of Action
-
-1. Begin by cracking the key functions of the game:
+Key functions of the game:
 - check an entered word vs a list of English words to return a value of true or false
 - check an entered word vs the lettersInPlay array
 - create method for adding and removing letters from the array
 
-2. Create the first level, the MVP.
-- design layout of game screen
-- add timer and score features
-- implement game logic defined above
-
-3. Work on subsequent levels and extra functionality.
-
-Level structure v1 (20secs per level)
-Increase speed of letter disappearance each level, change weather.
+Level structure (30secs per level)
+Change weather each level.
 - Level 1 - Score more than X points (basic game)
-- Level 2 - Score more than X points using only green letters
-- Level 3 - Score more than X points using only capital letters (introduce lower case)
-- Level 4 - Score more than X points, words under 4 letters long not allowed
-- Level 5 - Score more than X points using only green, capital letters, no words under
-5 letters long allowed.
-
+- Level 2 - Score more than X points using only blue letters
+- Level 3 - Score more than X points using only red letters, words under 4 letters long not allowed
 
 Basic Game Logic:
 - Instructions dictate level rules and win conditions.
@@ -477,11 +436,8 @@ lettersInPlay array.
 - Submitted word is checked against valid word list (array? txt file?).
 - Letters of submitted word are checked to make sure they are present in lettersInPlay array.
 - If both of the above return true, score is updated.
-- A green shadow/border is added to letters on screen.
 - This cycle repeats until timer runs out.
 - If score === win conditions, player passes the level and can move on to the next.
 - If score !== win conditions, player is asked to repeat level.
-
-XMLHttpRequest cannot load file:///Users/georgewilman/Development/WDI_PROJECT_1/words.txt. Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
 
 */
