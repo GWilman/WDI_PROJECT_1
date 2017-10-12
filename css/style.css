@@ -46,7 +46,7 @@ input {
   display: inline-block;
 }
 
-.intro, .timeUp, .level2Info, .level3Info, .endGame {
+.intro, .timeUp, .level1Info, .level2Info, .level3Info, .endGame {
   height: 410px;
   width: 55%;
   background: rgba(0, 0, 0, .6);
@@ -70,6 +70,10 @@ input {
 
 .timeUp, .level2Info, .level3Info, .endGame {
   margin-top: 120px;
+  display: none;
+}
+
+.level1Info {
   display: none;
 }
 
@@ -303,6 +307,10 @@ p.levelInfo {
   color: rgba(108, 209, 125, 1);
 }
 
+p.introInfo {
+  margin: 50px auto 0 auto;
+}
+
 p.flash {
   font-family: 'Capriola', sans-serif;
   color: rgba(242, 218, 36, 1);
@@ -346,6 +354,10 @@ button:hover {
 
 button.lev2Button {
   margin: 40px auto 30px auto;
+}
+
+button#startGame {
+  margin: 50px auto 30px auto;
 }
 
 button.restartGame {

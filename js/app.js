@@ -28,6 +28,7 @@ const alphabetUpper = ['A', 'A', 'B', 'C', 'D', 'E', 'E', 'E', 'F', 'G', 'H', 'H
 
 $(() => {
 
+  const $startGame = $('#startGame');
   const $playGame = $('#playGame');
   const $answerBox = $('#answerBox');
   const $clock = $('#countdown');
@@ -49,6 +50,11 @@ $(() => {
 
 
   // Adding event listeners:
+  $startGame.on('click', function() {
+    $('.intro').hide();
+    $('.level1Info').show();
+  });
+
   $playGame.on('click', function() {
     prepareGameScreen();
     resetGame();
@@ -211,7 +217,7 @@ $(() => {
 
   function level3Settings() {
     $('.timeUp').css({'background': 'rgba(255, 255, 255, .4)'});
-    $lev3Button.css({'margin': '28px auto 30px auto'});
+    $lev3Button.css({'margin': '28px auto 25px auto'});
     $snow.hide();
     $snowman.hide();
     $('footer').css({'background': 'rgba(32, 76, 43, 1)'});
@@ -225,7 +231,7 @@ $(() => {
 
   // sets up game screen and focuses on word input.
   function prepareGameScreen() {
-    $('#rules, .intro, .timeUp, .level2Info, .level3Info, .cloudLeft, .cloudRight').hide();
+    $('#rules, .level1Info, .timeUp, .level2Info, .level3Info, .cloudLeft, .cloudRight').hide();
     $letterSpace.show();
     $scoreboard.show();
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
@@ -284,25 +290,13 @@ $(() => {
   }
 
   function addLetter() {
-    counter++;
-    randomClass = counter.toString();
+    appendRanClassP();
     lettersInPlay.push(letterToAdd);
-    $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
-    $('p.' + randomClass).html(letterToAdd).css({
-      'top': ranPosTop + 'px',
-      'left': ranPosLeft + 'px'
-    });
   }
 
   function addColorLetter() {
-    counter++;
-    randomClass = counter.toString();
-    $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
+    appendRanClassP();
     ranColor = Math.floor(Math.random() * 7);
-    $('p.' + randomClass).html(letterToAdd).css({
-      'top': ranPosTop + 'px',
-      'left': ranPosLeft + 'px'
-    });
     if (currentLevel === 2) {
       $('p.' + randomClass).html(letterToAdd).css({'color': level2Colors[ranColor]});
     } else if (currentLevel === 3) {
@@ -311,6 +305,16 @@ $(() => {
     if (ranColor === 0 || ranColor === 1 || ranColor === 2 || ranColor === 3 || ranColor === 4) {
       lettersInPlay.push(letterToAdd);
     }
+  }
+
+  function appendRanClassP() {
+    counter++;
+    randomClass = counter.toString();
+    $letterSpace.append($('<p></p>').addClass(randomClass).addClass('letters'));
+    $('p.' + randomClass).html(letterToAdd).css({
+      'top': ranPosTop + 'px',
+      'left': ranPosLeft + 'px'
+    });
   }
 
   function level1Deleter() {
