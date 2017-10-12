@@ -188,7 +188,7 @@ button:hover {
   background: rgba(73, 150, 86, 1);
 }
 
-button#startGame {
+#startGame {
   margin: 50px auto 30px auto;
 }
 
@@ -200,7 +200,7 @@ button.lev2Button {
   margin: 60px auto 30px auto;
 }
 
-button#lev3Button {
+#lev3Button {
   margin: 30px auto 22px auto;
 }
 
