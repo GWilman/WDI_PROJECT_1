@@ -207,7 +207,6 @@ $(() => {
   }
 
   function level2Settings() {
-    $lev2Button.css({'margin': '60px auto 30px auto'});
     $snow.show();
     $snowman.show();
     $('.level2Info').show();
@@ -216,24 +215,22 @@ $(() => {
   }
 
   function level3Settings() {
-    $('.timeUp').css({'background': 'rgba(255, 255, 255, .4)'});
-    $lev3Button.css({'margin': '28px auto 25px auto'});
+    $('.stars, .level3Info').show();
     $snow.hide();
     $snowman.hide();
-    $('footer').css({'background': 'rgba(32, 76, 43, 1)'});
-    $('.stars').show();
     $('.sun').addClass('moon');
-    $('.level3Info').show();
-    $levelHeader.html('Level 3');
     $('.cloud1, .cloud2, .cloud3, .cloud4, body, footer').removeClass('snowy');
+    $levelHeader.html('Level 3');
+    $('.timeUp').css({'background': 'rgba(255, 255, 255, .4)'});
+    $('footer').css({'background': 'rgba(32, 76, 43, 1)'});
     $('body').css({'background': 'rgba(0, 0, 0, 1)'});
   }
 
   // sets up game screen and focuses on word input.
   function prepareGameScreen() {
-    $('#rules, .level1Info, .timeUp, .level2Info, .level3Info, .cloudLeft, .cloudRight').hide();
     $letterSpace.show();
     $scoreboard.show();
+    $('#rules, .level1Info, .timeUp, .level2Info, .level3Info, .cloudLeft, .cloudRight').hide();
     $('h1').css({'font-size': '16px', 'position': 'fixed', 'left': '10px', 'top': '10px'});
   }
 
@@ -251,15 +248,13 @@ $(() => {
   }
 
   function restartGame() {
-    $('.intro').show();
+    $('.intro, #rules').show();
+    $('.stars, .endGame').hide();
+    $clock.hide();
     $('footer').css({'background': 'rgba(108, 209, 125, 1)'});
     $('body').css({'background': 'rgba(109, 228, 242, .8)'});
-    $('.stars').hide();
-    $('.endGame').hide();
     $('h1').css({'font-size': '100px', 'position': 'static'});
-    $('#rules').show();
     $('.sun').removeClass('moon');
-    $clock.hide();
     $scoreCount.html(score);
     currentLevel = 1;
     $levelHeader.html(`Level ${currentLevel}`);
@@ -383,7 +378,7 @@ $(() => {
   }
 
   function showReplay() {
-    $replayButton.show().css({'margin': '70px auto 30px auto'});
+    $replayButton.show();
     $nextLevel.hide();
     $scoreInfo.html('<br>Unlucky, you didn\'t quite make it! Have another go...');
   }
@@ -405,7 +400,7 @@ $(() => {
 
 /*
 
----WordGame--- (name TBC)
+---WeeWords--- (name TBC)
 
 The basic logic of this game is that the user can enter (valid) words into an input
 text area using ONLY the letters that they can see on the screen. The letters on
