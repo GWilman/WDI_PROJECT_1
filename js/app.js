@@ -234,7 +234,6 @@ function level3Settings() {
   $('body').css({'background': 'rgba(0, 0, 0, 1)'});
 }
 
-// sets up game screen and focuses on word input.
 function prepareGameScreen() {
   $letterSpace.show();
   $scoreboard.show();
