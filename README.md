@@ -4,7 +4,7 @@
 
 For our first project, we were given four days to design and build an in-browser game using HTML, CSS and Javascript (JQuery library used). WeeWords was a product of my own imagination, rather than a remake of an existing game. It requires the user to enter words made up of letters randomly appearing on screen, and features 3 levels with specific win conditions.
 
-##### [Visit website](https://tranquil-fortress-83267.herokuapp.com/) for best playing experience (the game was not designed for mobile).
+##### [Visit website](https://wee-words.herokuapp.com/) for best playing experience (the game was not designed for mobile).
 
 ---
 
