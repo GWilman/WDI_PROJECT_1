@@ -1,6 +1,6 @@
 ![image](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png)
 
-# GA WDI30 Project 1 - WeeWords
+# GA WDI-30 Project 1 - WeeWords
 
 For our first project, we were given four days to design and build an in-browser game using HTML, CSS and Javascript (JQuery library used). WeeWords was a product of my own imagination, rather than a remake of an existing game. It requires the user to enter words made up of letters randomly appearing on screen, and features 3 levels with specific win conditions.
 
@@ -10,17 +10,17 @@ For our first project, we were given four days to design and build an in-browser
 
 ###### WeeWords takes place in a 100% CSS-built and animated environment, with the weather changing on each level as the player progresses.
 
-<img src="https://imgur.com/8llXrdZ.png" width="700">
+<p align="center"><img src="https://imgur.com/8llXrdZ.png" width="700"></p>
 
 ###### Level one gives the player 30 seconds to fulfil the required score, using any letters they can see on screen. The letters are picked at random from a weighted alphabet (so that you get more E’s than Z’s etc.) and assigned a random position on screen. They shrink and fade away after a set period of time, at which point they become unavailable for use in the player’s words.
 
-<img src="https://imgur.com/Z2mQLZf.png" width="700">
+<p align="center"><img src="https://imgur.com/Z2mQLZf.png" width="700"></p>
 
 ###### In level two, the difficulty increases as the player is only able to use blue letters. In level 3, the player may only use red letters and words under 4 letters long are not allowed.
 
-<img src="https://imgur.com/3yyNskp.png" width="700">
+<p align="center"><img src="https://imgur.com/3yyNskp.png" width="700"></p>
 
-<img src="https://imgur.com/L1Ij5dt.png" width="700">
+<p align="center"><img src="https://imgur.com/L1Ij5dt.png" width="700"></p>
 
 ###### The win logic requires a submitted word to fulfil a number of conditions to be passed as a valid word:
 
