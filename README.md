@@ -22,6 +22,8 @@ For our first project, we were given four days to design and build an in-browser
 
 <p align="center"><img src="https://imgur.com/L1Ij5dt.png" width="700"></p>
 
+<p align="center"><img src="https://imgur.com/Fx0ZE8B.png" width="700"></p>
+
 ###### The win logic requires a submitted word to fulfil a number of conditions to be passed as a valid word:
 
 ###### * The word is a correctly spelt English word (checked against an array of English words).
