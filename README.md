@@ -33,7 +33,7 @@ For our first project, we were given four days to design and build an in-browser
 
 ```
 function returnResult() {
-  if (wordIsValid === true && invalidLetters.length === 0 && wordIsRepeat === false) {
+  if (wordIsValid && invalidLetters.length === 0 && !wordIsRepeat) {
     $wordLog.append($(`<span>${submittedWord}</span>`).addClass('green'));
     scoreUpdate();
   } else {
