@@ -1,3 +1,10 @@
+/* globals wordList */
+
+// stop Heroku app from sleeping
+setInterval(() => {
+  $.get('http://wee-words.herokuapp.com/');
+}, 900000);
+
 let lettersInPlay = [];
 let submittedWord;
 let countdown = 30;
