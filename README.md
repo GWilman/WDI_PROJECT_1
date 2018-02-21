@@ -6,6 +6,8 @@ For our first project, we were given four days to design and build an in-browser
 
 ##### [Visit website](https://wee-words.herokuapp.com/) for best playing experience (the game was not designed for mobile).
 
+*Please be aware that Heroku apps go to sleep after 30 mins of inactivity and may take a little time to load*
+
 ---
 
 ###### WeeWords takes place in a 100% CSS-built and animated environment, with the weather changing on each level as the player progresses.
